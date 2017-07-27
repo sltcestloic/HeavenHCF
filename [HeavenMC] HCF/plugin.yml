@@ -1,0 +1,78 @@
+name: HeavenHCF
+version: 2.0-DEV
+author: koalaQ_Q
+main: fr.taeron.hcf.HCF
+depends: [HeavenCore]
+commands:
+  refund:
+    aliases: [restore]
+  angle:
+    description: 
+  crowbar:
+    description: 
+  conquest:
+  economy:
+    aliases: [bal, money, eco, econ]
+    description: 
+  end:
+    description: 
+  eotw:
+    aliases: [endoftheworld]
+    description: 
+  game:
+    description: 
+  faction:
+    aliases: [f, fac]
+    description: 
+  gopple:
+    description: 
+    aliases: [goppletimer, goppletime]
+  help:
+    aliases: ["?"]
+    description: 
+  coords:
+    aliases: [coordinates]
+  ts:
+    aliases: [teamspeak]
+  koth:
+    description: 
+  lives:
+    description:
+  location:
+    aliases: [loc]
+    description:
+  logout:
+    aliases: [disconnect]
+    description:
+  key:
+    description:
+  mapkit:
+    description: 
+  pay:
+    description:
+  pvptimer:
+    aliases: [pvp]
+    description:
+  servertime:
+    description:
+  setborder:
+    aliases: [setbordersize]
+    description: 
+  spawn:
+  timer:
+    description: 
+  togglecapzone:
+  togglelightning:
+  reclaim:
+    aliases: [redeem]
+  togglecobblestone:
+    aliases: [togglecobble, cobbletoggle, cobblestonetoggle]
+  ores:
+    aliases: [ore, stats, stat]
+  tracker:
+  flip:
+  kb:
+  spawner:
+  glowstonemountain:
+    aliases: [gmountain, pute]
+  kit:
