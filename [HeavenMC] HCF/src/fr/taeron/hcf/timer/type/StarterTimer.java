@@ -56,7 +56,7 @@ public class StarterTimer extends PlayerTimer implements Listener{
     	if(!(e.getEntity() instanceof Player)){
     		return;
     	}
-    	if(this.getRemaining((Player)e.getEntity()) > 0 || HCF.getPlugin().getTimerManager().pvpProtectionTimer.getRemaining((Player)e.getEntity()) > 0){
+    	if(this.getRemaining((Player)e.getEntity()) > 0 || HCF.getPlugin().getTimerManager().starterTimer.getRemaining((Player)e.getEntity()) > 0){
     		e.setCancelled(true);
     	}
     }
@@ -106,17 +106,7 @@ public class StarterTimer extends PlayerTimer implements Listener{
             }
         }
     }
-    
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPlayerRespawn(final PlayerRespawnEvent event) {
-        final Player player = event.getPlayer();
-        this.clearCooldown(player);
-        if (this.legible.add(player.getUniqueId())) {
-            player.sendMessage(ChatColor.GREEN + "");
-            player.sendMessage(ChatColor.GREEN + "Quand tu quittera le spawn, tes 30 minutes de Starter Timer commencerons.");
-            player.sendMessage(ChatColor.GREEN + "");
-        }
-    }
+
     
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerDeath(final PlayerDeathEvent event) {
@@ -171,8 +161,10 @@ public class StarterTimer extends PlayerTimer implements Listener{
         if (!player.hasPlayedBefore()) {
             if (!this.plugin.getEotwHandler().isEndOfTheWorld() && this.legible.add(player.getUniqueId())) {
                 player.sendMessage(ChatColor.GREEN + "");
-                player.sendMessage(ChatColor.GREEN + "Quand tu quittera le spawn, tes 60 minutes de Starter Timer commencerons.");
+                player.sendMessage(ChatColor.GREEN + "Tu viens de rejoindre le serveur pour la première fois depuis le début de cette map, tu as donc 60 minutes de Starter Timer");
                 player.sendMessage(ChatColor.GREEN + "");
+                this.setCooldown(player, player.getUniqueId());
+                this.setPaused(player, player.getUniqueId(), true);
             }
         }
         else if (this.isPaused(player) && this.getRemaining(player) > 0L && !this.plugin.getFactionManager().getFactionAt(event.getSpawnLocation()).isSafezone()) {

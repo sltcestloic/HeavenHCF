@@ -4,7 +4,6 @@ import com.google.common.collect.*;
 import fr.taeron.hcf.*;
 import org.bukkit.command.*;
 import org.bukkit.entity.*;
-import org.heavenmc.core.BaseConstants;
 import org.heavenmc.core.util.BukkitUtils;
 import org.heavenmc.core.util.JavaUtils;
 import org.bukkit.*;
@@ -34,7 +33,7 @@ public class EconomyCommand implements CommandExecutor{
             target = (OfflinePlayer)sender;
         }
         if (!target.hasPlayedBefore() && !target.isOnline()) {
-            sender.sendMessage(String.format(BaseConstants.PLAYER_WITH_NAME_OR_UUID_NOT_FOUND, args[0]));
+            sender.sendMessage("§cCe joueur n'existe pas.");
             return true;
         }
         final UUID uuid = target.getUniqueId();

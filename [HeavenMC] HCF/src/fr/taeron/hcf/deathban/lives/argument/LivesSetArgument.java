@@ -2,7 +2,6 @@ package fr.taeron.hcf.deathban.lives.argument;
 
 import fr.taeron.hcf.*;
 import org.bukkit.command.*;
-import org.heavenmc.core.BaseConstants;
 import org.heavenmc.core.util.BukkitUtils;
 import org.heavenmc.core.util.JavaUtils;
 import org.heavenmc.core.util.command.CommandArgument;
@@ -36,7 +35,7 @@ public class LivesSetArgument extends CommandArgument{
         }
         final OfflinePlayer target = BukkitUtils.offlinePlayerWithNameOrUUID(args[1]);
         if (!target.hasPlayedBefore() && !target.isOnline()) {
-            sender.sendMessage(String.format(BaseConstants.PLAYER_WITH_NAME_OR_UUID_NOT_FOUND, args[1]));
+            sender.sendMessage("§cCe joueur n'existe pas.");
             return true;
         }
         this.plugin.getDeathbanManager().setLives(target.getUniqueId(), amount);
