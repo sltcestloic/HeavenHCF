@@ -12,6 +12,8 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.*;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,14 +33,14 @@ public class UserManager implements Listener
         plugin.getServer().getPluginManager().registerEvents((Listener)this, (Plugin)plugin);
     }
     
-    /*@EventHandler
+    @EventHandler
     public void onConnect(PlayerJoinEvent e){
     	Player p = e.getPlayer();
     	int version = ((CraftPlayer)p).getHandle().playerConnection.networkManager.getVersion();
     	if(version > 7){
     		p.kickPlayer("§cLes connections ne sont autorisées qu'en version 1.7");
     	}
-    }*/
+    }
     
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerJoin(final PlayerJoinEvent event) {

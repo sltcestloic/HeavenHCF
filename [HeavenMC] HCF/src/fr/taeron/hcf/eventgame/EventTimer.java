@@ -130,7 +130,7 @@ public class EventTimer extends GlobalTimer implements Listener
     @SuppressWarnings({ "unchecked", "deprecation", "rawtypes" })
 	public boolean tryContesting(final EventFaction eventFaction, final CommandSender sender) {
         if (this.eventFaction != null) {
-            sender.sendMessage(ChatColor.RED + "Il y a déjà un event en cours, fait /event cancel pour l'anuller.");
+            sender.sendMessage(ChatColor.RED + "Il y a déjà un event en cours, fait /event cancel pour l'annuler.");
             return false;
         }
         if (eventFaction instanceof KothFaction) {

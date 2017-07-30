@@ -150,7 +150,6 @@ public class FactionUser implements ConfigurationSerializable{
         map.put("kit-use-map", kitUseSaveMap);
         map.put("kit-cooldown-map", kitCooldownSaveMap);
         map.put("id", this.id);
-        this.saveMiningData();
         return map;
     }
     
@@ -187,36 +186,6 @@ public class FactionUser implements ConfigurationSerializable{
 				}
 			}
     	}.runTaskAsynchronously(HCF.getPlugin());
-    }
-    
-    public void saveMiningDataSync(){
-    	java.sql.Connection c = Core.getInstance().getConnection();
-    	int playerid = 0;
-    	PreparedStatement s;
-    	try {
-    		s = c.prepareStatement("SELECT playerid FROM `players` WHERE uuid = ?");
-    		s.setString(1, FactionUser.this.userUUID.toString());
-    		ResultSet rs = s.executeQuery();
-    		if (rs.next()) {
-    			playerid = rs.getInt("playerid");
-    		}
-    		rs.close();
-
-
-    		s = c.prepareStatement("UPDATE `mining` set diamonds=?, iron=?, gold=?, redstone=?, emerald=?, coal=?, lapis=? WHERE playerid=?");
-    		s.setInt(1, FactionUser.this.diamonds);
-    		s.setInt(2, FactionUser.this.iron);
-    		s.setInt(3, FactionUser.this.gold);
-    		s.setInt(4, FactionUser.this.redstone);
-    		s.setInt(5, FactionUser.this.emerald);
-    		s.setInt(6, FactionUser.this.coal);
-    		s.setInt(7, FactionUser.this.lapis);
-    		s.setInt(8, playerid);
-    		s.executeUpdate();
-    		s.close();
-    	} catch (SQLException e) {
-    		e.printStackTrace();
-    	}
     }
     
     

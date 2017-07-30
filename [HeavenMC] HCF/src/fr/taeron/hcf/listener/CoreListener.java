@@ -29,6 +29,7 @@ public class CoreListener implements Listener
     public void onPlayerQuit(PlayerKickEvent event) {
         event.setLeaveMessage(null);
         HCF.getPlugin().getPlayerManager().removePlayer(event.getPlayer());
+        HCF.getPlugin().getUserManager().getUser(event.getPlayer().getUniqueId()).saveMiningData();
     }
     
     @EventHandler

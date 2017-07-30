@@ -25,7 +25,7 @@ import java.util.*;
 public class FlatFileFactionManager implements Listener, FactionManager{
 	
     private final WarzoneFaction warzone;
-    //private GlowMountainFaction gmountain;
+    private GlowMountainFaction gmountain;
     private final WildernessFaction wilderness; 
     private final Map<CoordinatePair, Claim> claimPositionMap;
     private final Map<UUID, UUID> factionPlayerUuidMap;
@@ -43,14 +43,14 @@ public class FlatFileFactionManager implements Listener, FactionManager{
         plugin.getServer().getPluginManager().registerEvents((Listener)this, (Plugin)plugin);
         this.warzone = new WarzoneFaction();
         this.wilderness = new WildernessFaction();
-      //  this.gmountain = new GlowMountainFaction();
+        this.gmountain = new GlowMountainFaction();
         this.reloadFactionData();
     }
     
-    /*public GlowMountainFaction getGMountainFac(){
+    public GlowMountainFaction getGMountainFac(){
     	return this.gmountain;
-    }*/
-    
+    }
+   
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerJoinedFaction(final PlayerJoinedFactionEvent event) {
         this.factionPlayerUuidMap.put(event.getUniqueID(), event.getFaction().getUniqueID());
@@ -289,9 +289,9 @@ public class FlatFileFactionManager implements Listener, FactionManager{
         if (!this.factionNameMap.containsKey("EndPortal")) {
             adding.add(new EndPortalFaction());
         }
-        /*if(!this.factionNameMap.containsKey("GlowstoneMountain")){
+        if(!this.factionNameMap.containsKey("GlowstoneMountain")){
         	adding.add(new GlowMountainFaction());
-        }*/
+        }
         for (final Faction added : adding) {
             this.cacheFaction(added);
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "La faction " + added.getName() + " n'a pas été trouvée, elle a donc été créée automatiquement..");

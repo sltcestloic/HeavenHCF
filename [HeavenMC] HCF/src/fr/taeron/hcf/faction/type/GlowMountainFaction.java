@@ -11,8 +11,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import fr.taeron.hcf.faction.claim.Claim;
 
-public class GlowMountainFaction extends ClaimableFaction implements ConfigurationSerializable
-{
+public class GlowMountainFaction extends ClaimableFaction implements ConfigurationSerializable{
+	
     public GlowMountainFaction() {
         super("GlowstoneMountain");
         final World overworld = Bukkit.getWorld("world_nether");

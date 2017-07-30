@@ -58,8 +58,6 @@ public class Tab implements Listener{
 		            
 		            list.setSlot(15, "", "  §aMorts:§f ", "0");
 		            
-		            list.setSlot(16, " §aheavenmc.org");
-		            
 		            list.setSlot(20, "§aSOTW:");
 		            
 		            list.setSlot(21, "§aConnectés:");
@@ -227,7 +225,7 @@ public class Tab implements Listener{
         list.setSlot(0, "§aPosition:");
         list.setSlot(1, ChatColor.GOLD.toString() + ChatColor.BOLD + "  HeavenMC");
         list.setSlot(2, "§aEnd Portal:");
-        list.setSlot(3, "", "§f[", "x, x) [?]");
+        list.setSlot(3, "", "§f[", "?]  x, z");
         list.setSlot(5, "§f1000, 1000");
         
         
@@ -240,8 +238,6 @@ public class Tab implements Listener{
         list.setSlot(14, "§fP1, T1");
         
         list.setSlot(15, "", "  §aMorts:§f ", "0");
-        
-        list.setSlot(16, " §aheavenmc.org");
         
         list.setSlot(20, "§aSOTW:");
         
