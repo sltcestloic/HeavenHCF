@@ -5,7 +5,6 @@ import fr.taeron.hcf.*;
 import fr.taeron.hcf.faction.claim.*;
 import fr.taeron.hcf.visualise.*;
 import org.bukkit.inventory.*;
-import org.heavenmc.core.Core;
 import org.heavenmc.core.util.BukkitUtils;
 import org.bukkit.command.*;
 import org.bukkit.*;
@@ -66,7 +65,7 @@ public class LandMap{
             if (dataMap.isEmpty()) {
                 continue;
             }
-            final String materialName = Core.getPlugin().getItemDb().getName(new ItemStack(dataMap.entrySet().iterator().next().getValue().getItemType(), 1));
+            final String materialName = new ItemStack(dataMap.entrySet().iterator().next().getValue().getItemType(), 1).getType().toString();
             if (!inform) {
                 continue;
             }

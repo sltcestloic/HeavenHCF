@@ -2,9 +2,10 @@ package fr.taeron.hcf.faction.argument;
 
 import fr.taeron.hcf.faction.*;
 import fr.taeron.hcf.*;
+import fr.taeron.hcf.events.factions.*;
+
 import org.bukkit.command.*;
 import org.bukkit.entity.*;
-import fr.taeron.hcf.eventgame.faction.*;
 import org.bukkit.event.player.*;
 import org.heavenmc.core.util.command.CommandArgument;
 

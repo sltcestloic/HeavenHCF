@@ -21,7 +21,6 @@ public class LivesCheckArgument extends CommandArgument
         return '/' + label + ' ' + this.getName() + " <joueur>";
     }
     
-    @SuppressWarnings("deprecation")
 	public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         OfflinePlayer target;
         if (args.length > 1) {

@@ -4,12 +4,6 @@ import org.bukkit.plugin.java.*;
 
 import com.sk89q.worldedit.bukkit.*;
 
-import fr.taeron.hcf.tablist.Tab;
-import fr.taeron.hcf.tablist.TabAPI;
-import fr.taeron.hcf.tablist.TabList;
-import fr.taeron.hcf.tablist.listeners.TabPacketListener;
-import fr.taeron.hcf.tablist.listeners.TabPlayerListener;
-
 import fr.taeron.hcf.pvpclass.*;
 import fr.taeron.hcf.scoreboard.*;
 
@@ -17,17 +11,20 @@ import org.bukkit.scheduler.*;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.*;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.*;
-import org.bukkit.entity.Player;
 
 import fr.taeron.hcf.user.*;
-import fr.taeron.hcf.eventgame.faction.*;
+import fr.taeron.hcf.events.*;
+import fr.taeron.hcf.events.EventExecutor;
+import fr.taeron.hcf.events.conquest.*;
+import fr.taeron.hcf.events.eotw.*;
+import fr.taeron.hcf.events.factions.*;
+import fr.taeron.hcf.events.koth.*;
 import fr.taeron.hcf.faction.type.*;
 import fr.taeron.hcf.flip.FlipCommand;
 import fr.taeron.hcf.flip.FlipListener;
@@ -37,18 +34,15 @@ import fr.taeron.hcf.kits.KitManager;
 import fr.taeron.hcf.pvpclass.archer.*;
 import org.bukkit.event.*;
 import fr.taeron.hcf.faction.claim.*;
-import fr.taeron.hcf.listener.fixes.*;
+import fr.taeron.hcf.listeners.*;
+import fr.taeron.hcf.listeners.fixes.*;
 import fr.taeron.hcf.visualise.*;
 import net.minecraft.util.org.apache.commons.lang3.time.DurationFormatUtils;
-import fr.taeron.hcf.listener.*;
+
 import org.bukkit.plugin.*;
-import fr.taeron.hcf.eventgame.conquest.*;
-import fr.taeron.hcf.eventgame.eotw.*;
-import fr.taeron.hcf.eventgame.*;
-import fr.taeron.hcf.eventgame.EventExecutor;
+
 import fr.taeron.hcf.faction.*;
 import fr.taeron.hcf.faction.argument.FactionClaimArgument;
-import fr.taeron.hcf.eventgame.koth.*;
 import fr.taeron.hcf.deathban.lives.*;
 import fr.taeron.hcf.timer.*;
 import fr.taeron.hcf.tracker.TrackerExecutor;
@@ -97,13 +91,8 @@ public class HCF extends JavaPlugin{
     private NpcManager npcManager;
     private NpcPlayerHelper npcplayerhelper;
     private PlayerCache playerCache;
-    TabPlayerListener playerListener;
-    TabPacketListener packetListener;
     private PlayerManager playerManager;
     public ProtocolManager protocolManager;
-    public HashMap<String, TabList> tabLists = new HashMap<String, TabList>();
-    public TabAPI api;
-    public TabPlayerListener tabplayerlistener;
     private KitManager kitManager;
       
     public HCF() {
@@ -168,19 +157,12 @@ public class HCF extends JavaPlugin{
         Command.broadcastCommandMessage(Bukkit.getConsoleSender(), "§aSauvegarde automatique des factions effectuée avec succès.");
     }
     
-	@SuppressWarnings("deprecation")
 	public void onDisable() {
         this.pvpClassManager.onDisable();
         this.scoreboardHandler.clearBoards();
         this.foundDiamondsListener.saveConfig();
         this.saveData();
         HCF.plugin = null;
-        for (Player online : Bukkit.getOnlinePlayers()) {
-            TabList list = this.tabLists.get(online.getName());
-            if (list != null) {
-                list.clear();
-            }
-        }
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -359,16 +341,7 @@ public class HCF extends JavaPlugin{
         NpcNameGeneratorFactory.setNameGenerator(new NpcNameGeneratorImpl(this));
         this.playerCache = new PlayerCache();
         this.protocolManager = ProtocolLibrary.getProtocolManager();
-        this.api = new TabAPI(this);
-        this.playerListener = new TabPlayerListener(this);
-        this.packetListener = new TabPacketListener(this);
         this.kitManager = new FlatFileKitManager(this);
-        Tab.plugin = this;
-        Tab.update();
-    }
-    
-    public void removeTabPlayer(final Player player) {
-        this.tabLists.remove(player.getName());
     }
     
     
@@ -442,11 +415,6 @@ public class HCF extends JavaPlugin{
     
     public PlayerCache getPlayerCache(){
     	return this.playerCache;
-    }
-    
-    
-    public TabPlayerListener getTabListPlayerListener(){
-    	return this.tabplayerlistener;
     }
     
     public KitManager getKitManager(){

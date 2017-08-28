@@ -2,12 +2,13 @@ package fr.taeron.hcf.timer;
 
 import org.bukkit.event.*;
 
-import fr.taeron.hcf.eventgame.*;
 import fr.taeron.hcf.timer.type.*;
 import org.bukkit.plugin.java.*;
 import org.heavenmc.core.util.Config;
 
 import fr.taeron.hcf.*;
+import fr.taeron.hcf.events.*;
+
 import org.bukkit.plugin.*;
 import java.util.*;
 

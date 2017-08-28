@@ -7,7 +7,6 @@ import org.bukkit.command.*;
 import org.bukkit.entity.*;
 import org.bukkit.*;
 import org.bukkit.inventory.*;
-import org.heavenmc.core.Core;
 import org.heavenmc.core.util.command.CommandArgument;
 
 import java.util.*;
@@ -50,7 +49,7 @@ public class KitSetImageArgument extends CommandArgument{
             return true;
         }
         kit.setImage(stack.clone());
-        sender.sendMessage(ChatColor.GREEN + "Tu as défini l'image du kit " + ChatColor.YELLOW + kit.getDisplayName() + ChatColor.GREEN + " en " + ChatColor.YELLOW + Core.getInstance().getItemDb().getName(stack) + ChatColor.GREEN + '.');
+        sender.sendMessage(ChatColor.GREEN + "Tu as défini l'image du kit " + ChatColor.YELLOW + kit.getDisplayName() + ChatColor.GREEN + " en " + ChatColor.YELLOW + stack.getType() + ChatColor.GREEN + '.');
         return true;
     }
     

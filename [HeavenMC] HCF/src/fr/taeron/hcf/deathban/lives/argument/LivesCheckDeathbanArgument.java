@@ -26,7 +26,6 @@ public class LivesCheckDeathbanArgument extends CommandArgument{
         return '/' + label + ' ' + this.getName() + " <joueur>";
     }
     
-    @SuppressWarnings("deprecation")
 	public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (args.length < 2) {
             sender.sendMessage(ChatColor.RED + "Utilisation: " + this.getUsage(label));

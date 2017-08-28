@@ -1,9 +1,12 @@
 package fr.taeron.hcf.faction.event;
 
 import org.bukkit.event.*;
-import fr.taeron.hcf.eventgame.*;
+
+import fr.taeron.hcf.events.*;
+import fr.taeron.hcf.events.factions.*;
+
 import org.bukkit.entity.*;
-import fr.taeron.hcf.eventgame.faction.*;
+
 import com.google.common.base.*;
 
 public class CaptureZoneEnterEvent extends FactionEvent implements Cancellable

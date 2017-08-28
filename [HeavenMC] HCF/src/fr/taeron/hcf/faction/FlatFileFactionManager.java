@@ -141,13 +141,11 @@ public class FlatFileFactionManager implements Listener, FactionManager{
         return this.getPlayerFaction(player.getUniqueId());
     }
     
-    @SuppressWarnings("deprecation")
 	public PlayerFaction getContainingPlayerFaction(final String search) {
         final OfflinePlayer target = JavaUtils.isUUID(search) ? Bukkit.getOfflinePlayer(UUID.fromString(search)) : Bukkit.getOfflinePlayer(search);
         return (target.hasPlayedBefore() || target.isOnline()) ? this.getPlayerFaction(target.getUniqueId()) : null;
     }
     
-    @SuppressWarnings("deprecation")
 	public Faction getContainingFaction(final String search) {
         final Faction faction = this.getFaction(search);
         if (faction != null) {

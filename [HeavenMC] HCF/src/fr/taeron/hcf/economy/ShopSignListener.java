@@ -44,9 +44,9 @@ public class ShopSignListener implements Listener
                 if (lines[1].equalsIgnoreCase("Crowbar")) {
                     stack = new Crowbar().getItemIfPresent();
                 }
-                else if ((stack = Core.getPlugin().getItemDb().getItem(ShopSignListener.ALPHANUMERIC_REMOVER.matcher(lines[1]).replaceAll(""), (int)quantity)) == null) {
-                    return;
-                }
+                
+                stack = new ItemStack(Material.getMaterial(ShopSignListener.ALPHANUMERIC_REMOVER.matcher(lines[1]).replaceAll("")));
+                
                 final Player player = event.getPlayer();
                 final String[] fakeLines = Arrays.copyOf(sign.getLines(), 4);
                 if ((lines[0].contains("Sell") && lines[0].contains(ChatColor.RED.toString())) || lines[0].contains(ChatColor.AQUA.toString())) {

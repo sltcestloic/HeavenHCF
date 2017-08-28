@@ -16,15 +16,17 @@ import fr.taeron.hcf.timer.type.*;
 import fr.taeron.hcf.user.FactionUser;
 import fr.taeron.hcf.timer.*;
 import fr.taeron.hcf.timer.Timer;
-import fr.taeron.hcf.eventgame.tracker.*;
 import fr.taeron.hcf.faction.type.*;
 import org.bukkit.command.*;
 
 import org.bukkit.*;
-import fr.taeron.hcf.eventgame.eotw.*;
+
 import fr.taeron.hcf.pvpclass.*;
-import fr.taeron.hcf.eventgame.*;
-import fr.taeron.hcf.eventgame.faction.*;
+import fr.taeron.hcf.events.*;
+import fr.taeron.hcf.events.eotw.*;
+import fr.taeron.hcf.events.factions.*;
+import fr.taeron.hcf.events.trackers.*;
+
 import java.util.*;
 
 public class TimerSidebarProvider implements SidebarProvider{

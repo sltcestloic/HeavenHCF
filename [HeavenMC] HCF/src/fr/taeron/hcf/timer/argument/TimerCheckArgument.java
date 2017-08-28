@@ -7,6 +7,7 @@ import fr.taeron.hcf.timer.Timer;
 import net.minecraft.util.org.apache.commons.lang3.time.DurationFormatUtils;
 
 import org.bukkit.scheduler.*;
+import org.heavenmc.core.util.UUIDFetcher;
 import org.heavenmc.core.util.command.CommandArgument;
 
 import fr.taeron.hcf.*;
@@ -47,7 +48,7 @@ public class TimerCheckArgument extends CommandArgument{
             public void run() {
                 UUID uuid;
                 try {
-                    uuid = UUIDFetcher.getUUIDOf(args[2]);
+                    uuid = UUIDFetcher.getUUID(args[2]);
                 }
                 catch (Exception ex) {
                     sender.sendMessage(ChatColor.GOLD + "Le joueur '" + ChatColor.WHITE + args[2] + ChatColor.GOLD + "' est introuvable.");

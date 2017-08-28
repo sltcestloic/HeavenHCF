@@ -4,9 +4,9 @@ import org.bukkit.command.*;
 import org.bukkit.entity.*;
 import org.bukkit.*;
 import org.bukkit.ChatColor;
-
-import fr.taeron.hcf.listener.*;
 import org.bukkit.inventory.*;
+
+import fr.taeron.hcf.listeners.*;
 
 public class RefundCommand implements CommandExecutor
 {
