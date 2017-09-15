@@ -20,7 +20,7 @@ import net.minecraft.util.com.google.common.collect.HashBasedTable;
 import net.minecraft.util.com.google.common.collect.Sets;
 import net.minecraft.util.com.google.common.collect.Table;
 
-public class KeyManager{
+public class CrateManager{
 	
     private KothKey kothKey;
     private StarterKey lootKey;
@@ -32,7 +32,7 @@ public class KeyManager{
     private Config config;
     private KillerKey killerKey;
     
-    public KeyManager(HCF plugin) {
+    public CrateManager(HCF plugin) {
         this.depositedCrateMap = HashBasedTable.create();
         this.config = new Config(plugin, "key-data");
         this.keys = Sets.newHashSet(new Key[] { this.killerKey = new KillerKey(), this.aquaKey = new AquaKey(), this.lootKey = new StarterKey(), this.legendaryKey = new MasterKey(), this.kothKey = new KothKey(), this.heavenKey = new HeavenKey() });

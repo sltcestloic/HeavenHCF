@@ -63,17 +63,17 @@ public class TrackerSearchArgument extends CommandArgument{
 		}
 		ArrayList<Player> rdn = new ArrayList<Player>();
 		for(Player randy : Bukkit.getOnlinePlayers()){
-			if(HCF.getPlugin().getFactionManager().getPlayerFaction(randy) != null && HCF.getPlugin().getFactionManager().getPlayerFaction(randy) != HCF.getPlugin().getFactionManager().getPlayerFaction(p) && !HCF.getPlugin().getFactionManager().getPlayerFaction(p).getAlliedFactions().contains(HCF.getPlugin().getFactionManager().getPlayerFaction(randy))){
+			if(HCF.getPlugin().getFactionManager().getClaimAt(randy.getLocation()).getFaction().isDeathban() && HCF.getPlugin().getFactionManager().getPlayerFaction(randy) != null && HCF.getPlugin().getFactionManager().getPlayerFaction(randy) != HCF.getPlugin().getFactionManager().getPlayerFaction(p) && !HCF.getPlugin().getFactionManager().getPlayerFaction(p).getAlliedFactions().contains(HCF.getPlugin().getFactionManager().getPlayerFaction(randy))){
 				rdn.add(randy);
 			}
 		}
 		if(rdn.size() < 1){
-			sender.sendMessage(ChatColor.RED + "Impossible de trouver un joueur à traquer, merci de ré-essayer !");
+			sender.sendMessage(ChatColor.RED + "Impossible de trouver un joueur à traquer, réessayes plus tard !");
 			return false;
 		}
 		Player t = rdn.get(new Random().nextInt(rdn.size()));
 		if(t == null){
-			sender.sendMessage(ChatColor.RED + "Le tracker est tombé sur un joueur déconnecté, merci de ré-essayer !");
+			sender.sendMessage(ChatColor.RED + "Le tracker est tombé sur un joueur déconnecté, merci de réessayer !");
 			return false;
 		}
 		user.setTrackedUser(t);

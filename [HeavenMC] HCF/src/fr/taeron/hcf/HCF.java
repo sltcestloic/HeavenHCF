@@ -32,7 +32,6 @@ import fr.taeron.hcf.kits.FlatFileKitManager;
 import fr.taeron.hcf.kits.KitExecutor;
 import fr.taeron.hcf.kits.KitManager;
 import fr.taeron.hcf.pvpclass.archer.*;
-import org.bukkit.event.*;
 import fr.taeron.hcf.faction.claim.*;
 import fr.taeron.hcf.listeners.*;
 import fr.taeron.hcf.listeners.fixes.*;
@@ -78,7 +77,7 @@ public class HCF extends JavaPlugin{
     private WorldEditPlugin worldEdit;
     private FoundDiamondsListener foundDiamondsListener;
     private ClaimHandler claimHandler;
-    private KeyManager keyManager;
+    private CrateManager keyManager;
     private DeathbanManager deathbanManager;
     private EconomyManager economyManager;
     private EotwHandler eotwHandler;
@@ -165,87 +164,86 @@ public class HCF extends JavaPlugin{
         HCF.plugin = null;
     }
     
-    @SuppressWarnings({ "unchecked", "rawtypes" })
 	private void registerConfiguration() {
-        ConfigurationSerialization.registerClass((Class)CaptureZone.class);
-        ConfigurationSerialization.registerClass((Class)Deathban.class);
-        ConfigurationSerialization.registerClass((Class)Claim.class);
-        ConfigurationSerialization.registerClass((Class)Subclaim.class);
-        ConfigurationSerialization.registerClass((Class)Deathban.class);
-        ConfigurationSerialization.registerClass((Class)FactionUser.class);
-        ConfigurationSerialization.registerClass((Class)ClaimableFaction.class);
-        ConfigurationSerialization.registerClass((Class)ConquestFaction.class);
-        ConfigurationSerialization.registerClass((Class)CapturableFaction.class);
-        ConfigurationSerialization.registerClass((Class)KothFaction.class);
-        ConfigurationSerialization.registerClass((Class)EndPortalFaction.class);
-        ConfigurationSerialization.registerClass((Class)GlowMountainFaction.class);
-        ConfigurationSerialization.registerClass((Class)Faction.class);
-        ConfigurationSerialization.registerClass((Class)FactionMember.class);
-        ConfigurationSerialization.registerClass((Class)PlayerFaction.class);
-        ConfigurationSerialization.registerClass((Class)RoadFaction.class);
-        ConfigurationSerialization.registerClass((Class)SpawnFaction.class);
-        ConfigurationSerialization.registerClass((Class)RoadFaction.NorthRoadFaction.class);
-        ConfigurationSerialization.registerClass((Class)RoadFaction.EastRoadFaction.class);
-        ConfigurationSerialization.registerClass((Class)RoadFaction.SouthRoadFaction.class);
-        ConfigurationSerialization.registerClass((Class)RoadFaction.WestRoadFaction.class);
+        ConfigurationSerialization.registerClass(CaptureZone.class);
+        ConfigurationSerialization.registerClass(Deathban.class);
+        ConfigurationSerialization.registerClass(Claim.class);
+        ConfigurationSerialization.registerClass(Subclaim.class);
+        ConfigurationSerialization.registerClass(Deathban.class);
+        ConfigurationSerialization.registerClass(FactionUser.class);
+        ConfigurationSerialization.registerClass(ClaimableFaction.class);
+        ConfigurationSerialization.registerClass(ConquestFaction.class);
+        ConfigurationSerialization.registerClass(CapturableFaction.class);
+        ConfigurationSerialization.registerClass(KothFaction.class);
+        ConfigurationSerialization.registerClass(EndPortalFaction.class);
+        ConfigurationSerialization.registerClass(GlowMountainFaction.class);
+        ConfigurationSerialization.registerClass(Faction.class);
+        ConfigurationSerialization.registerClass(FactionMember.class);
+        ConfigurationSerialization.registerClass(PlayerFaction.class);
+        ConfigurationSerialization.registerClass(RoadFaction.class);
+        ConfigurationSerialization.registerClass(SpawnFaction.class);
+        ConfigurationSerialization.registerClass(RoadFaction.NorthRoadFaction.class);
+        ConfigurationSerialization.registerClass(RoadFaction.EastRoadFaction.class);
+        ConfigurationSerialization.registerClass(RoadFaction.SouthRoadFaction.class);
+        ConfigurationSerialization.registerClass(RoadFaction.WestRoadFaction.class);
     }
     
 	private void registerListeners() {
         final PluginManager manager = this.getServer().getPluginManager();
-        manager.registerEvents((Listener)new ArcherClass(this), (Plugin)this);
-        manager.registerEvents((Listener)new PortalTrapFixListener(), (Plugin)this);
-        manager.registerEvents((Listener)new AutoSmeltOreListener(), (Plugin)this);
-        manager.registerEvents((Listener)new BlockHitFixListener(), (Plugin)this);
-        manager.registerEvents((Listener)new BlockJumpGlitchFixListener(), (Plugin)this);
-        manager.registerEvents((Listener)new BoatGlitchFixListener(), (Plugin)this);
-        manager.registerEvents((Listener)new BookDeenchantListener(), (Plugin)this);
-        manager.registerEvents((Listener)new BorderListener(), (Plugin)this);
-        manager.registerEvents((Listener)new BottledExpListener(), (Plugin)this);
-        manager.registerEvents((Listener)new ChatListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new ClaimWandListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new CombatLogListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new CoreListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new CrowbarListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new DeathListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new DeathMessageListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new DeathSignListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new DeathbanListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new EnchantLimitListener(), (Plugin)this);
-        manager.registerEvents((Listener)new EnderChestRemovalListener(), (Plugin)this);
-        manager.registerEvents((Listener)new EntityLimitListener(), (Plugin)this);
-        manager.registerEvents((Listener)new FlatFileFactionManager(this), (Plugin)this);
-        manager.registerEvents((Listener)new EndListener(), (Plugin)this);
-        manager.registerEvents((Listener)new EotwListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new EventSignListener(), (Plugin)this);
-        manager.registerEvents((Listener)new ExpMultiplierListener(), (Plugin)this);
-        manager.registerEvents((Listener)new FactionListener(this), (Plugin)this);
-        manager.registerEvents((Listener)(this.foundDiamondsListener = new FoundDiamondsListener(this)), (Plugin)this);
-        manager.registerEvents((Listener)new InfinityArrowFixListener(), (Plugin)this);
-        manager.registerEvents((Listener)new KitListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new KitMapListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new ServerSecurityListener(), (Plugin)this);
-        manager.registerEvents((Listener)new HungerFixListener(), (Plugin)this);
-        manager.registerEvents((Listener)new PearlGlitchListener(), (Plugin)this);
-        manager.registerEvents((Listener)new PortalListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new PotionLimitListener(), (Plugin)this);
-        manager.registerEvents((Listener)new ProtectionListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new SignSubclaimListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new ShopSignListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new SkullListener(), (Plugin)this);
-        manager.registerEvents((Listener)new BeaconStrengthFixListener(), (Plugin)this);
-        manager.registerEvents((Listener)new VoidGlitchFixListener(), (Plugin)this);
-        manager.registerEvents((Listener)new WallBorderListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new WorldListener(this), (Plugin)this);
-        manager.registerEvents((Listener)new ExpListener(), (Plugin)this);
-        manager.registerEvents((Listener)new ElevatorListener(), (Plugin)this);
-        manager.registerEvents((Listener)new BlockBreakListener(), (Plugin)this);
+        manager.registerEvents(new ArcherClass(this), this);
+        manager.registerEvents(new PortalTrapFixListener(), this);
+        manager.registerEvents(new AutoSmeltOreListener(), this);
+        manager.registerEvents(new BlockHitFixListener(), this);
+        manager.registerEvents(new BlockJumpGlitchFixListener(), this);
+        manager.registerEvents(new BoatGlitchFixListener(), this);
+        manager.registerEvents(new BookDeenchantListener(), this);
+        manager.registerEvents(new BorderListener(), this);
+        manager.registerEvents(new BottledExpListener(), this);
+        manager.registerEvents(new ChatListener(this), this);
+        manager.registerEvents(new ClaimWandListener(this), this);
+        manager.registerEvents(new CombatLogListener(this), this);
+        manager.registerEvents(new CoreListener(this), this);
+        manager.registerEvents(new CrowbarListener(this), this);
+        manager.registerEvents(new DeathListener(this), this);
+        manager.registerEvents(new DeathMessageListener(this), this);
+        manager.registerEvents(new DeathSignListener(this), this);
+        manager.registerEvents(new DeathbanListener(this), this);
+        manager.registerEvents(new EnchantLimitListener(), this);
+        manager.registerEvents(new EnderChestRemovalListener(), this);
+        manager.registerEvents(new EntityLimitListener(), this);
+        manager.registerEvents(new FlatFileFactionManager(this), this);
+        manager.registerEvents(new EndListener(), this);
+        manager.registerEvents(new EotwListener(this), this);
+        manager.registerEvents(new EventSignListener(), this);
+        manager.registerEvents(new ExpMultiplierListener(), this);
+        manager.registerEvents(new FactionListener(this), this);
+        manager.registerEvents((this.foundDiamondsListener = new FoundDiamondsListener(this)), this);
+        manager.registerEvents(new InfinityArrowFixListener(), this);
+        manager.registerEvents(new KitListener(this), this);
+        manager.registerEvents(new ServerSecurityListener(), this);
+        manager.registerEvents(new HungerFixListener(), this);
+        manager.registerEvents(new PearlGlitchListener(), this);
+        manager.registerEvents(new PortalListener(this), this);
+        manager.registerEvents(new PotionLimitListener(), this);
+        manager.registerEvents(new ProtectionListener(this), this);
+        manager.registerEvents(new SignSubclaimListener(this), this);
+        manager.registerEvents(new ShopSignListener(this), this);
+        manager.registerEvents(new SkullListener(), this);
+        manager.registerEvents(new BeaconStrengthFixListener(), this);
+        manager.registerEvents(new VoidGlitchFixListener(), this);
+        manager.registerEvents(new WallBorderListener(this), this);
+        manager.registerEvents(new WorldListener(this), this);
+        manager.registerEvents(new ExpListener(), this);
+        manager.registerEvents(new ElevatorListener(), this);
+        manager.registerEvents(new BlockBreakListener(), this);
         manager.registerEvents(new WeatherFixListener(), this);
         manager.registerEvents(new FactionClaimArgument(this), this);
         manager.registerEvents(new TrackerListener(), this);
         manager.registerEvents(new FlipListener(), this);
         manager.registerEvents(new LivesListener(), this);
-        manager.registerEvents(new ComboKnockbackListener(), this);
+        manager.registerEvents(new KnockbackListener(), this);
         manager.registerEvents(new MobTargetListener(), this);
+        manager.registerEvents(new TabListener(), this);
     }
 	
 	public void runAutoSave(){
@@ -258,50 +256,32 @@ public class HCF extends JavaPlugin{
 		}.runTaskTimerAsynchronously(this, 20, 18000);
 	}
 	
-	/*public void scheduleAutoRestart(){
-		new BukkitRunnable(){
-			public void run(){
-				final Calendar calendar = Calendar.getInstance();
-		        calendar.setTimeInMillis(System.currentTimeMillis());
-		        final int mYear = calendar.get(1);
-		        final int mMonth = calendar.get(2) + 1;
-		        final int mDay = calendar.get(5);
-		        final int mHour = calendar.get(11);
-		        final int mMin = calendar.get(12);
-		        final int mSec = calendar.get(13);
-		        if(mHour == 2 )
-			}
-		}.runTaskTimer(this, 20L, 20L);
-		
-	}*/
-	
-	
     
     private void registerCommands() {
-        this.getCommand("angle").setExecutor((CommandExecutor)new AngleCommand());
-        this.getCommand("conquest").setExecutor((CommandExecutor)new ConquestExecutor(this));
-        this.getCommand("crowbar").setExecutor((CommandExecutor)new CrowbarCommand());
-        this.getCommand("economy").setExecutor((CommandExecutor)new EconomyCommand(this));
-        this.getCommand("eotw").setExecutor((CommandExecutor)new EotwCommand(this));
-        this.getCommand("game").setExecutor((CommandExecutor)new EventExecutor(this));
-        this.getCommand("help").setExecutor((CommandExecutor)new HelpCommand());
-        this.getCommand("faction").setExecutor((CommandExecutor)new FactionExecutor(this));
-        this.getCommand("gopple").setExecutor((CommandExecutor)new GoppleCommand(this));
-        this.getCommand("koth").setExecutor((CommandExecutor)new KothExecutor(this));
-        this.getCommand("lives").setExecutor((CommandExecutor)new LivesExecutor(this));
-        this.getCommand("location").setExecutor((CommandExecutor)new LocationCommand(this));
-        this.getCommand("logout").setExecutor((CommandExecutor)new LogoutCommand(this));
-        this.getCommand("mapkit").setExecutor((CommandExecutor)new MapKitCommand(this));
-        this.getCommand("pay").setExecutor((CommandExecutor)new PayCommand(this));
-        this.getCommand("pvptimer").setExecutor((CommandExecutor)new PvpTimerCommand(this));
-        this.getCommand("refund").setExecutor((CommandExecutor)new RefundCommand());
-        this.getCommand("servertime").setExecutor((CommandExecutor)new ServerTimeCommand());
-        this.getCommand("spawn").setExecutor((CommandExecutor)new SpawnCommand(this));
-        this.getCommand("timer").setExecutor((CommandExecutor)new TimerExecutor(this));
-        this.getCommand("togglecapzone").setExecutor((CommandExecutor)new ToggleCapzoneCommand(this));
-        this.getCommand("togglelightning").setExecutor((CommandExecutor)new ToggleLightningCommand(this));
-        this.getCommand("reclaim").setExecutor((CommandExecutor)new ReclaimCommand());
-        this.getCommand("togglecobblestone").setExecutor((CommandExecutor)new ToggleCobblestoneCommand());
+        this.getCommand("angle").setExecutor(new AngleCommand());
+        this.getCommand("conquest").setExecutor(new ConquestExecutor(this));
+        this.getCommand("crowbar").setExecutor(new CrowbarCommand());
+        this.getCommand("economy").setExecutor(new EconomyCommand(this));
+        this.getCommand("eotw").setExecutor(new EotwCommand(this));
+        this.getCommand("game").setExecutor(new EventExecutor(this));
+        this.getCommand("help").setExecutor(new HelpCommand());
+        this.getCommand("faction").setExecutor(new FactionExecutor(this));
+        this.getCommand("gopple").setExecutor(new GoppleCommand(this));
+        this.getCommand("koth").setExecutor(new KothExecutor(this));
+        this.getCommand("lives").setExecutor(new LivesExecutor(this));
+        this.getCommand("location").setExecutor(new LocationCommand(this));
+        this.getCommand("logout").setExecutor(new LogoutCommand(this));
+        this.getCommand("mapkit").setExecutor(new MapKitCommand(this));
+        this.getCommand("pay").setExecutor(new PayCommand(this));
+        this.getCommand("pvptimer").setExecutor(new PvpTimerCommand(this));
+        this.getCommand("refund").setExecutor(new RefundCommand());
+        this.getCommand("servertime").setExecutor(new ServerTimeCommand());
+        this.getCommand("spawn").setExecutor(new SpawnCommand(this));
+        this.getCommand("timer").setExecutor(new TimerExecutor(this));
+        this.getCommand("togglecapzone").setExecutor(new ToggleCapzoneCommand(this));
+        this.getCommand("togglelightning").setExecutor(new ToggleLightningCommand(this));
+        this.getCommand("reclaim").setExecutor(new ReclaimCommand());
+        this.getCommand("togglecobblestone").setExecutor(new ToggleCobblestoneCommand());
         this.getCommand("ores").setExecutor(new OresCommand());
         this.getCommand("tracker").setExecutor(new TrackerExecutor());
         this.getCommand("flip").setExecutor(new FlipCommand());
@@ -332,10 +312,10 @@ public class HCF extends JavaPlugin{
         this.scoreboardHandler = new ScoreboardHandler(this);
         this.userManager = new UserManager(this);
         this.visualiseHandler = new VisualiseHandler();
-        this.getCommand("setborder").setExecutor((CommandExecutor)new SetBorderCommand());
-        this.keyManager = new KeyManager(this);
-        this.getServer().getPluginManager().registerEvents((Listener)new KeyListener(this), (Plugin)this);
-        this.getCommand("key").setExecutor((CommandExecutor)new KeyExecutor(this));
+        this.getCommand("setborder").setExecutor(new SetBorderCommand());
+        this.keyManager = new CrateManager(this);
+        this.getServer().getPluginManager().registerEvents(new CrateListener(this), this);
+        this.getCommand("key").setExecutor(new KeyExecutor(this));
         this.npcManager = new NpcManager(this);
         this.npcplayerhelper = new NpcPlayerHelperImpl();
         NpcNameGeneratorFactory.setNameGenerator(new NpcNameGeneratorImpl(this));
@@ -361,7 +341,7 @@ public class HCF extends JavaPlugin{
         return this.worldEdit;
     }
     
-    public KeyManager getKeyManager() {
+    public CrateManager getKeyManager() {
         return this.keyManager;
     }
     

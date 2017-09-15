@@ -71,11 +71,11 @@ public class TrackerListener implements Listener{
 			}
 			if(dif <= 0){
 				keys = 1;
-			} else if (dif <= 25){
+			} else if (dif <= 15){
 				keys = 2;
-			} else if (dif <= 50){
+			} else if (dif <= 25){
 				keys = 3;
-			} else if (dif <= 75){
+			} else if (dif <= 50){
 				keys = 4;
 			} else {
 				keys = 5;

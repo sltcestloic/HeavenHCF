@@ -39,7 +39,7 @@ public class FlipCommand implements CommandExecutor{
 		emerald.setAmount(4);
 		ItemStack diamond = new ItemBuilder(Material.DIAMOND_BLOCK).displayName("§b4 blocs de diamant").build();
 		diamond.setAmount(4);
-		ItemStack help = new ItemBuilder(Material.REDSTONE_TORCH_ON).displayName("§6Aide:").lore(new String[] {"§e- §7Le /" + label + " te permet de gagner des blocs de minerais de ton choix", "§e- §7Clique sur le minerais que tu veux essayer de gagner", "§e- §7Tu as 1 chance sur 3 de gagner le minerais en question", "§e- §7Tu ne peux utiliser cette commande qu'une fois durant la map"}).build();
+		ItemStack help = new ItemBuilder(Material.REDSTONE_TORCH_ON).displayName("§6Aide:").lore(new String[] {"§e- §7Le /" + label + " te permet de gagner des blocs de minerais",  "de ton choix", "§e- §7Clique sur le minerais que tu veux" , "essayer de gagner", "§e- §7Tu as 1 chance sur 3 de gagner le minerais",  "en question", "§e- §7Tu ne peux utiliser cette commande qu'une fois",  "durant la map"}).build();
 		i.setItem(0, redPane);
 		i.setItem(1, redPane);
 		i.setItem(2, redPane);

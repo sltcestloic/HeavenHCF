@@ -24,7 +24,7 @@ import org.heavenmc.core.util.ItemBuilder;
 
 import fr.taeron.hcf.HCF;
 
-public class KeyTask {
+public class CrateTask {
 
 	public HashMap<Integer, Integer> speeds;
 	
@@ -39,12 +39,12 @@ public class KeyTask {
         final ArrayList<ItemStack> crateRands = getCrateRand(player.getOpenInventory().getTopInventory());
         if (crateRands == null) {
             player.sendMessage("§cImpossible d'ouvrir la crate, contacte un administrateur.");
-            KeyListener.open.remove(player.getName());
+            CrateListener.open.remove(player.getName());
             player.closeInventory();
             return;
         }
         final Inventory inventory = player.getOpenInventory().getTopInventory();
-        final OpenCrate openCrate = KeyListener.open.get(player.getName());
+        final OpenCrate openCrate = CrateListener.open.get(player.getName());
         player.openInventory(inventory);
         inventory.setItem(3, new ItemBuilder(Material.REDSTONE_TORCH_ON).displayName("§6Récompense").build());
         inventory.setItem(4, new ItemBuilder(Material.REDSTONE_TORCH_ON).displayName("§6Récompense").build());
@@ -61,7 +61,7 @@ public class KeyTask {
         inventory.setItem(16, (ItemStack)crateRands.get(randInt(0, crateRands.size() - 1)));
         player.updateInventory();
         final Location add = location.add(new Vector(0.5, 0.5, 0.5));
-        KeyTask.firework(add);
+        CrateTask.firework(add);
         new BukkitRunnable() {
             int step = 0;
             long startTime = System.currentTimeMillis();
@@ -70,7 +70,7 @@ public class KeyTask {
                 final long n = System.currentTimeMillis() - this.startTime;
                 if (this.step == 0) {
                     if (n < 6000L) {
-                        KeyTask.glassRainbow(inventory, true);
+                        CrateTask.glassRainbow(inventory, true);
                         openCrate.check();
                         if (openCrate.should()) {
                             player.playSound(player.getLocation(), Sound.WOOD_CLICK, 1.0f, 1.0f);
@@ -89,12 +89,12 @@ public class KeyTask {
                 else if (this.step == 1) {
                     if (n >= 9000L) {
                         ++this.step;
-                        KeyTask.firework(add);
+                        CrateTask.firework(add);
                         player.closeInventory();
                         player.playSound(player.getLocation(), Sound.CHEST_CLOSE, 1.0f, 1.0f);
                     }
                     else {
-                    	KeyTask.glassRainbow(inventory, false);
+                    	CrateTask.glassRainbow(inventory, false);
                     }
                 }
                 if (this.step >= 2) {

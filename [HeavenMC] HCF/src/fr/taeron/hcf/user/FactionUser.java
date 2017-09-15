@@ -2,7 +2,6 @@ package fr.taeron.hcf.user;
 
 import org.bukkit.configuration.serialization.*;
 
-import fr.taeron.hcf.HCF;
 import fr.taeron.hcf.deathban.*;
 import fr.taeron.hcf.kits.Kit;
 import net.minecraft.util.gnu.trove.map.TObjectIntMap;
@@ -15,13 +14,8 @@ import net.minecraft.util.gnu.trove.procedure.TObjectLongProcedure;
 import java.util.stream.*;
 import com.google.common.collect.*;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 import org.bukkit.entity.*;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.heavenmc.core.Core;
 import org.heavenmc.core.util.GenericUtils;
 import org.bukkit.*;
 
@@ -37,7 +31,6 @@ public class FactionUser implements ConfigurationSerializable{
     private long lastFactionLeaveMillis;
     private int kills;
     private int deaths;
-    private int diamondsMined;
     private int healthBrewed;
     private Player trackingUser;
     private long trackingStartMillis;
@@ -76,7 +69,6 @@ public class FactionUser implements ConfigurationSerializable{
         this.deaths = 0;
         this.kitUseMap = new TObjectIntHashMap();
         this.kitCooldownMap = new TObjectLongHashMap();
-        this.createMiningData();
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -93,19 +85,24 @@ public class FactionUser implements ConfigurationSerializable{
         this.showLightning = (boolean) map.get("showLightning");
         this.deathban = (Deathban) map.get("deathban");
         this.lastFactionLeaveMillis = Long.parseLong((String) map.get("lastFactionLeaveMillis"));
-        this.diamondsMined = (int) map.get("diamondsMined");
         this.healthBrewed = (int) map.get("brewed");
         this.kills = (int) map.get("kills");
         this.deaths = (int) map.get("deaths");
         this.lastLogoutTime = (long) map.get("lastLogoutTime");
         this.hasUsedFlip = (boolean) map.get("hasUsedFlip");
+        this.diamonds = (int) map.get("diamonds");
+        this.gold = (int) map.get("gold");
+        this.iron = (int) map.get("iron");
+        this.redstone = (int) map.get("redstone");
+        this.lapis = (int) map.get("lapis");
+        this.coal = (int) map.get("coal");
+        this.emerald = (int) map.get("emerald");
         for (Map.Entry<String, Integer> entry : GenericUtils.castMap(map.get("kit-use-map"), String.class, Integer.class).entrySet()) {
             this.kitUseMap.put(UUID.fromString(entry.getKey()), (int)entry.getValue());
         }
         for (Map.Entry<String, String> entry2 : GenericUtils.castMap(map.get("kit-cooldown-map"), String.class, String.class).entrySet()) {
             this.kitCooldownMap.put(UUID.fromString(entry2.getKey()), Long.parseLong(entry2.getValue()));
         }
-        this.loadMiningData();
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -114,7 +111,6 @@ public class FactionUser implements ConfigurationSerializable{
         map.put("shownScoreboardScores", new ArrayList(this.shownScoreboardScores));
         map.put("faction-chat-spying", this.factionChatSpying.stream().map(UUID::toString).collect(Collectors.toList()));
         map.put("userUUID", this.userUUID.toString());
-        map.put("diamondsMined", this.diamondsMined);
         map.put("brewed", this.healthBrewed);
         map.put("capzoneEntryAlerts", this.capzoneEntryAlerts);
         map.put("showClaimMap", this.showClaimMap);
@@ -125,6 +121,13 @@ public class FactionUser implements ConfigurationSerializable{
         map.put("deaths", this.deaths);
         map.put("lastLogoutTime", this.lastLogoutTime);
         map.put("hasUsedFlip", this.hasUsedFlip);
+        map.put("diamonds", this.diamonds);
+        map.put("gold", this.gold);
+        map.put("iron", this.iron);
+        map.put("redstone", this.redstone);
+        map.put("lapis", this.lapis);
+        map.put("coal", this.coal);
+        map.put("emerald", this.emerald);
         Map<String, Integer> kitUseSaveMap = new HashMap<String, Integer>(this.kitUseMap.size());
         this.kitUseMap.forEachEntry((uuid, value) -> {
             kitUseSaveMap.put(uuid.toString(), value);
@@ -152,110 +155,7 @@ public class FactionUser implements ConfigurationSerializable{
         map.put("id", this.id);
         return map;
     }
-    
-    public void saveMiningData(){
-    	new BukkitRunnable(){
-			@Override
-			public void run() {
-				java.sql.Connection c = Core.getInstance().getConnection();
-				int playerid = 0;
-				PreparedStatement s;
-				try {
-					s = c.prepareStatement("SELECT playerid FROM `players` WHERE uuid = ?");
-					s.setString(1, FactionUser.this.userUUID.toString());
-					ResultSet rs = s.executeQuery();
-					if (rs.next()) {
-						playerid = rs.getInt("playerid");
-					}
-					rs.close();
 
-
-					s = c.prepareStatement("UPDATE `mining` set diamonds=?, iron=?, gold=?, redstone=?, emerald=?, coal=?, lapis=? WHERE playerid=?");
-					s.setInt(1, FactionUser.this.diamonds);
-					s.setInt(2, FactionUser.this.iron);
-					s.setInt(3, FactionUser.this.gold);
-					s.setInt(4, FactionUser.this.redstone);
-					s.setInt(5, FactionUser.this.emerald);
-					s.setInt(6, FactionUser.this.coal);
-					s.setInt(7, FactionUser.this.lapis);
-					s.setInt(8, playerid);
-					s.executeUpdate();
-					s.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-    	}.runTaskAsynchronously(HCF.getPlugin());
-    }
-    
-    
-    public void loadMiningData(){
-    	new BukkitRunnable(){
-			@Override
-			public void run() {
-				java.sql.Connection c = Core.getInstance().getConnection();
-				try {
-					PreparedStatement s = c.prepareStatement("SELECT * FROM `players` WHERE uuid = ?");
-					s.setString(1, FactionUser.this.userUUID.toString());
-					ResultSet rs = s.executeQuery();
-					if (rs.next()) {
-						int playerid = rs.getInt("playerid");
-						s = c.prepareStatement("SELECT * FROM `mining` WHERE playerid = ?");
-						s.setInt(1, playerid);
-						rs = s.executeQuery();
-						if (rs.next()) {
-							FactionUser.this.diamonds = rs.getInt("diamonds");
-							FactionUser.this.iron = rs.getInt("iron");
-							FactionUser.this.gold = rs.getInt("gold");
-							FactionUser.this.redstone = rs.getInt("redstone");
-							FactionUser.this.emerald = rs.getInt("emerald");
-							FactionUser.this.coal = rs.getInt("coal");
-							FactionUser.this.lapis = rs.getInt("lapis");
-						}
-						s.close();
-						rs.close();
-					} else {
-						FactionUser.this.saveMiningData();
-					}
-				} catch (SQLException e){
-				}
-			}
-    	}.runTaskAsynchronously(HCF.getPlugin());
-    }
-    
-    public void createMiningData(){
-    	new BukkitRunnable(){
-			@Override
-			public void run() {
-				java.sql.Connection c = Core.getInstance().getConnection();
-				try {
-
-					PreparedStatement s = c.prepareStatement("SELECT * FROM `players` WHERE uuid = ?");
-					s.setString(1, FactionUser.this.userUUID.toString());
-					ResultSet rs = s.executeQuery();
-					if (rs.next()) {
-						int playerid = rs.getInt("playerid");
-
-						PreparedStatement s2 = c.prepareStatement(
-							"INSERT INTO `mining` (playerid, diamonds, iron, gold, redstone, emerald, coal, lapis) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-						s2.setInt(1, playerid);
-						s2.setInt(2, 0);
-						s2.setInt(3, 0);
-						s2.setInt(4, 0);
-						s2.setInt(5, 0);
-						s2.setInt(6, 0);
-						s2.setInt(7, 0);
-						s2.setInt(8, 0);
-						
-						s2.executeUpdate();
-					}
-					rs.close();
-				} catch (SQLException e){
-				}
-			}
-    	}.runTaskAsynchronously(HCF.getPlugin());
-    }
-    
     public long getRemainingKitCooldown(Kit kit) {
         long remaining = this.kitCooldownMap.get(kit.getUniqueID());
         if (remaining == this.kitCooldownMap.getNoEntryValue()) {
@@ -331,14 +231,6 @@ public class FactionUser implements ConfigurationSerializable{
     
     public void setKills(int kills) {
         this.kills = kills;
-    }
-    
-    public int getDiamondsMined() {
-        return this.diamondsMined;
-    }
-    
-    public void setDiamondsMined(int diamondsMined) {
-        this.diamondsMined = diamondsMined;
     }
     
     public int getHealthBrewed() {

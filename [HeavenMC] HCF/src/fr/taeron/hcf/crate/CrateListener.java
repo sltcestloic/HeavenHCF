@@ -28,14 +28,14 @@ import org.heavenmc.core.util.InventoryUtils;
 
 import fr.taeron.hcf.HCF;
 
-public class KeyListener implements Listener {
+public class CrateListener implements Listener {
 	
     private HCF plugin;
-    public static Map<String, KeyTask.OpenCrate> open;
+    public static Map<String, CrateTask.OpenCrate> open;
     
-    public KeyListener(HCF plugin) {
+    public CrateListener(HCF plugin) {
         this.plugin = plugin;
-        KeyListener.open = new HashMap<String, KeyTask.OpenCrate>();
+        CrateListener.open = new HashMap<String, CrateTask.OpenCrate>();
     }
     
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
@@ -159,6 +159,11 @@ public class KeyListener implements Listener {
                 return;
             }
             EnderChestKey enderChestKey = (EnderChestKey)key;
+            if(enderChestKey.getLocation().getBlockX() != event.getClickedBlock().getLocation().getBlockX() ||
+            		enderChestKey.getLocation().getBlockZ() != event.getClickedBlock().getLocation().getBlockZ()){
+            	player.sendMessage("§cCette caisse semble pas vouloir s'ouvrir... peut-être n'as tu pas cliqué sur la bonne ?");
+            	return;
+            }
             int rolls = enderChestKey.getRolls();
             int size = InventoryUtils.getSafestInventorySize(27);
             Inventory inventory = Bukkit.createInventory((InventoryHolder)player, size, enderChestKey.getName() + " Crate");
@@ -178,8 +183,8 @@ public class KeyListener implements Listener {
             }
             player.openInventory(inventory);
             Location location = block.getLocation();
-            KeyListener.open.put(event.getPlayer().getName(), new KeyTask.OpenCrate());   
-            KeyTask.startTask(event.getClickedBlock().getLocation(), event.getPlayer());
+            CrateListener.open.put(event.getPlayer().getName(), new CrateTask.OpenCrate());   
+            CrateTask.startTask(event.getClickedBlock().getLocation(), event.getPlayer());
             player.playSound(location, Sound.LEVEL_UP, 1.0f, 1.0f);
             this.decrementHand(player);
             event.setCancelled(true);

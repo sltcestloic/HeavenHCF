@@ -432,7 +432,7 @@ public class PlayerFaction extends ClaimableFaction implements Raidable{
             final FactionUser user = HCF.getPlugin().getUserManager().getUser((UUID) entry.getKey());
             final int kills = user.getKills();
             combinedKills += kills;
-            final int diamonds = user.getDiamondsMined();
+            final int diamonds = user.diamonds;
             combinedDiamonds += diamonds;
         }
         sender.sendMessage(ChatColor.YELLOW + "  Kills: " + ChatColor.GRAY + combinedKills);

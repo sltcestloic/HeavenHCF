@@ -20,13 +20,13 @@ import org.bukkit.util.Vector;
 import fr.taeron.hcf.command.SetKnockbackCommand;
 
 
-public class ComboKnockbackListener implements Listener{
+public class KnockbackListener implements Listener{
 	
 	private Field fieldPlayerConnection;
 	private Method sendPacket;
 	private Constructor<?> packetVelocity;
 	  
-	  public ComboKnockbackListener()
+	  public KnockbackListener()
 	  {
 	    try
 	    {
