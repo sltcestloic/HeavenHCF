@@ -31,7 +31,7 @@ public class FactionExecutor extends ArgumentExecutor{
         this.addArgument(new FactionForceKickArgument(plugin));
         this.addArgument(new FactionForceLeaderArgument(plugin));
         this.addArgument(new FactionForcePromoteArgument(plugin));
-        this.addArgument(this.helpArgument = new FactionHelpArgument(this));
+        this.addArgument(this.helpArgument = new FactionHelpArgument());
         this.addArgument(new FactionHomeArgument(this, plugin));
         this.addArgument(new FactionInviteArgument(plugin));
         this.addArgument(new FactionInvitesArgument(plugin));

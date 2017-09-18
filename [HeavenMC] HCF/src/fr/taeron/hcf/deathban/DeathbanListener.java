@@ -32,7 +32,7 @@ public class DeathbanListener implements Listener{
     }
     
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
-    public void onPlayerLogin(final PlayerLoginEvent event) {
+    public void onPlayerLogin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         final FactionUser user = this.plugin.getUserManager().getUser(player.getUniqueId());
         final Deathban deathban = user.getDeathban();
@@ -44,7 +44,7 @@ public class DeathbanListener implements Listener{
             return;
         }
         if (this.plugin.getEotwHandler().isEndOfTheWorld()) {
-            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.RED + "Tu es deathban jusqu'a la fin de la map car tu es mort pendant l'EOTW.\nReviens pour le prochain SOTW !");
+            event.getPlayer().kickPlayer(ChatColor.RED + "Tu es deathban jusqu'a la fin de la map car tu es mort pendant l'EOTW.\nReviens pour le prochain SOTW !");
         }
         else {
             final UUID uuid = player.getUniqueId();
@@ -59,16 +59,15 @@ public class DeathbanListener implements Listener{
                     this.lastAttemptedJoin.remove(uuid);
                     user.removeDeathban();
                     lives = this.plugin.getDeathbanManager().takeLives(uuid, 1);
-                    event.setResult(PlayerLoginEvent.Result.ALLOWED);
                     new LoginMessageRunnable(player, ChatColor.YELLOW + "Tu as utilisé une vie pour bypass ton deathban. Tu as désormais " + ChatColor.GOLD + lives + ChatColor.YELLOW + " vies.").runTask((Plugin)this.plugin);
                 }
                 else {
                     this.lastAttemptedJoin.put(uuid, millis + DeathbanListener.LIFE_USE_DELAY_MILLIS);
-                    event.disallow(PlayerLoginEvent.Result.KICK_OTHER, String.valueOf(prefix) + ChatColor.GOLD + "\n\n" + "Tu peux utiliser une vie en te reconnectant dans les " + ChatColor.YELLOW + DeathbanListener.LIFE_USE_DELAY_WORDS + ChatColor.GOLD + " à venir.");
+                    event.getPlayer().kickPlayer(String.valueOf(prefix) + ChatColor.GOLD + "\n\n" + "Tu peux utiliser une vie en te reconnectant dans les " + ChatColor.YELLOW + DeathbanListener.LIFE_USE_DELAY_WORDS + ChatColor.GOLD + " à venir.");
                 }
                 return;
             }
-            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.RED + "Tu est encore deathban pendant " + formattedDuration + ": " + ChatColor.YELLOW + deathban.getReason() + ChatColor.RED + '.' + "\nTu peux acheter une vie sur " + ConfigurationService.DONATE_URL + " pour bypass le deathban.");
+            event.getPlayer().kickPlayer(ChatColor.RED + "Tu est encore deathban pendant " + formattedDuration + ": " + ChatColor.YELLOW + deathban.getReason() + ChatColor.RED + '.' + "\nTu peux acheter une vie sur " + ConfigurationService.DONATE_URL + " pour bypass le deathban.");
         }
     }
     

@@ -22,7 +22,6 @@ public class PvpClassManager
         (this.pvpClasses = new HashMap<String, PvpClass>()).put("Archer", new ArcherClass(plugin));
         this.pvpClasses.put("Bard", new BardClass(plugin));
         this.pvpClasses.put("Mineur", new MinerClass(plugin));
-      //  this.pvpClasses.put("Reaper", new AssassinClass(plugin));
         for (final PvpClass pvpClass : this.pvpClasses.values()) {
             if (pvpClass instanceof Listener) {
                 plugin.getServer().getPluginManager().registerEvents((Listener)pvpClass, (Plugin)plugin);

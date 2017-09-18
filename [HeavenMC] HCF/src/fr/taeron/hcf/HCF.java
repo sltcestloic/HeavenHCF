@@ -5,14 +5,14 @@ import org.bukkit.plugin.java.*;
 import com.sk89q.worldedit.bukkit.*;
 
 import fr.taeron.hcf.pvpclass.*;
-import fr.taeron.hcf.scoreboard.*;
 
 import org.bukkit.scheduler.*;
+import org.heavenmc.core.Core;
+import org.heavenmc.core.scoreboard.ScoreboardManager;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.*;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -48,14 +48,16 @@ import fr.taeron.hcf.tracker.TrackerExecutor;
 import fr.taeron.hcf.tracker.TrackerListener;
 
 import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.bukkit.*;
 import org.bukkit.command.*;
 import fr.taeron.hcf.deathban.*;
 import fr.taeron.hcf.economy.*;
-import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketContainer;
 
 import fr.taeron.hcf.combatlog.CombatLogListener;
 import fr.taeron.hcf.combatlog.NpcManager;
@@ -83,16 +85,16 @@ public class HCF extends JavaPlugin{
     private EotwHandler eotwHandler;
     private FactionManager factionManager;
     private PvpClassManager pvpClassManager;
-    private ScoreboardHandler scoreboardHandler;
     private TimerManager timerManager;
     private UserManager userManager;
     private VisualiseHandler visualiseHandler;
     private NpcManager npcManager;
     private NpcPlayerHelper npcplayerhelper;
     private PlayerCache playerCache;
-    private PlayerManager playerManager;
     public ProtocolManager protocolManager;
     private KitManager kitManager;
+    private HCFSQLManager sqlManager;
+    private ScoreboardManager scoreboardManager;
       
     public HCF() {
         this.random = new Random();
@@ -158,7 +160,6 @@ public class HCF extends JavaPlugin{
     
 	public void onDisable() {
         this.pvpClassManager.onDisable();
-        this.scoreboardHandler.clearBoards();
         this.foundDiamondsListener.saveConfig();
         this.saveData();
         HCF.plugin = null;
@@ -300,7 +301,6 @@ public class HCF extends JavaPlugin{
     }
     
     private void registerManagers() {
-    	this.playerManager = new PlayerManager();
         this.claimHandler = new ClaimHandler(this);
         this.deathbanManager = new FlatFileDeathbanManager(this);
         this.economyManager = new FlatFileEconomyManager(this);
@@ -309,7 +309,6 @@ public class HCF extends JavaPlugin{
         this.factionManager = new FlatFileFactionManager(this);
         this.pvpClassManager = new PvpClassManager(this);
         this.timerManager = new TimerManager(this);
-        this.scoreboardHandler = new ScoreboardHandler(this);
         this.userManager = new UserManager(this);
         this.visualiseHandler = new VisualiseHandler();
         this.getCommand("setborder").setExecutor(new SetBorderCommand());
@@ -322,15 +321,39 @@ public class HCF extends JavaPlugin{
         this.playerCache = new PlayerCache();
         this.protocolManager = ProtocolLibrary.getProtocolManager();
         this.kitManager = new FlatFileKitManager(this);
+        this.sqlManager = new HCFSQLManager(this);
+        this.scoreboardManager = new ScoreboardManager(this, "§6§lHeavenHCF §e[Map 4]");
+        this.scoreboardManager.runTaskTimerAsynchronously(this, 0, 20);
     }
     
+    public ScoreboardManager getScoreboardManager(){
+    	return this.scoreboardManager;
+    }
     
-    public PacketContainer buildTeamPacket(final String name, final String display, final String prefix, final String suffix, final int flag, final String members) {
+    /*public PacketContainer buildTeamPacket(final String name, final String display, final String prefix, final String suffix, final int flag, final String members) {
         final PacketContainer packet = this.protocolManager.createPacket(PacketType.Play.Server.SCOREBOARD_TEAM);
         packet.getIntegers().write(0, flag);
         packet.getStrings().write(0, name).write(1, display).write(2, prefix).write(3, suffix);
         packet.getSpecificModifier(Collection.class).write(0, Arrays.asList(members));
         return packet;
+    }*/
+    
+    public int getPlayerId(UUID u){
+		int playerid = 0;
+		java.sql.Connection c = Core.getInstance().getConnection();
+		PreparedStatement s;
+		try {
+			s = c.prepareStatement("SELECT playerid FROM `players` WHERE uuid = ?");
+			s.setString(1, u.toString());
+			ResultSet rs = s.executeQuery();
+			if (rs.next()) {
+				playerid = rs.getInt("playerid");
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return playerid;
     }
     
     public Random getRandom() {
@@ -369,10 +392,6 @@ public class HCF extends JavaPlugin{
         return this.pvpClassManager;
     }
     
-    public ScoreboardHandler getScoreboardHandler() {
-        return this.scoreboardHandler;
-    }
-    
     public TimerManager getTimerManager() {
         return this.timerManager;
     }
@@ -401,8 +420,8 @@ public class HCF extends JavaPlugin{
     	return this.kitManager;
     }
     
-    public PlayerManager getPlayerManager(){
-    	return this.playerManager;
+    public HCFSQLManager getSQLManager(){
+    	return this.sqlManager;
     }
     
     static {

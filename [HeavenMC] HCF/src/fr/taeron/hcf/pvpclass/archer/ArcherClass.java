@@ -1,7 +1,6 @@
 package fr.taeron.hcf.pvpclass.archer;
 
 import fr.taeron.hcf.pvpclass.*;
-import fr.taeron.hcf.scoreboard.ScoreboardHandler;
 
 import net.minecraft.util.gnu.trove.map.*;
 import java.util.concurrent.*;
@@ -121,9 +120,6 @@ public class ArcherClass extends PvpClass implements Listener
                 }
                 this.plugin.getTimerManager().archerTimer.setCooldown((Player)entity, entity.getUniqueId());
                 ArcherClass.tagged.put(damaged.getUniqueId(), shooter.getUniqueId());
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    this.plugin.getScoreboardHandler().getPlayerBoard(player.getUniqueId()).addUpdates(ScoreboardHandler.getOnline());
-                }
                 if (this.plugin.getTimerManager().archerTimer.getRemaining((Player)entity) == 0L) {
                 	shooter.sendMessage(ChatColor.YELLOW + "Tu as touché " + ChatColor.RED + damaged.getName() + ChatColor.YELLOW + ", il est désormais sous archer tag");
                 	damaged.sendMessage(ChatColor.YELLOW + "Tu es désormais sous archer tag car tu as été touché par " + ChatColor.RED + shooter.getName());

@@ -6,7 +6,6 @@ import java.util.concurrent.*;
 import fr.taeron.hcf.timer.event.*;
 import org.bukkit.*;
 import fr.taeron.hcf.pvpclass.archer.*;
-import fr.taeron.hcf.scoreboard.ScoreboardHandler;
 
 import java.util.*;
 import org.bukkit.event.*;
@@ -15,7 +14,6 @@ import org.bukkit.entity.*;
 
 public class ArcherTimer extends PlayerTimer implements Listener
 {
-    private final HCF plugin;
     
     public String getScoreboardPrefix() {
         return ChatColor.YELLOW.toString();
@@ -23,13 +21,11 @@ public class ArcherTimer extends PlayerTimer implements Listener
     
     public ArcherTimer(final HCF plugin) {
         super("Archer Tag", TimeUnit.SECONDS.toMillis(8L));
-        this.plugin = plugin;
     }
     
     public void run() {
     }
     
-    @SuppressWarnings("deprecation")
 	@EventHandler
     public void onExpire(final TimerExpireEvent e) {
         if (e.getUserUUID().isPresent() && e.getTimer().equals(this)) {
@@ -43,9 +39,6 @@ public class ArcherTimer extends PlayerTimer implements Listener
             }
             player.sendMessage(ChatColor.YELLOW + "Tu n'es plus sous archer tag.");
             ArcherClass.tagged.remove(player.getUniqueId());
-            for (final Player players : Bukkit.getOnlinePlayers()) {
-                this.plugin.getScoreboardHandler().getPlayerBoard(players.getUniqueId()).addUpdates(ScoreboardHandler.getOnline());
-            }
         }
     }
     

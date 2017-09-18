@@ -22,13 +22,17 @@ public class CoreListener implements Listener
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.setJoinMessage(null);
-       HCF.getPlugin().getPlayerManager().loadPlayer(event.getPlayer());
+    }
+    
+    @EventHandler
+    public void onLogin(PlayerJoinEvent e){
+        HCF.getPlugin().getSQLManager().loadPlayer(e.getPlayer());
     }
     
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onPlayerQuit(PlayerKickEvent event) {
         event.setLeaveMessage(null);
-        HCF.getPlugin().getPlayerManager().removePlayer(event.getPlayer());
+        HCF.getPlugin().getSQLManager().saveData(event.getPlayer());
     }
     
     @EventHandler

@@ -1,11 +1,11 @@
 package fr.taeron.hcf.scoreboard.provider;
 
 import java.text.*;
-import fr.taeron.hcf.scoreboard.*;
 
 import org.bukkit.entity.*;
 import org.heavenmc.core.Core;
 import org.heavenmc.core.command.module.staffmode.StaffMode;
+import org.heavenmc.core.scoreboard.provider.ScoreboardProvider;
 import org.heavenmc.core.util.BukkitUtils;
 
 import fr.taeron.hcf.pvpclass.bard.*;
@@ -29,10 +29,10 @@ import fr.taeron.hcf.events.trackers.*;
 
 import java.util.*;
 
-public class TimerSidebarProvider implements SidebarProvider{
+public class TimerSidebarProvider implements ScoreboardProvider{
 	
     public static final ThreadLocal<DecimalFormat> CONQUEST_FORMATTER;
-    static final SidebarEntry EMPTY_ENTRY_FILLER;
+    static final String EMPTY_ENTRY_FILLER;
     private final HCF plugin;
     protected static final String STRAIGHT_LINE;
     private HashMap<Player, Long> lastCoordsUpdate = new HashMap<Player, Long>();
@@ -70,69 +70,62 @@ public class TimerSidebarProvider implements SidebarProvider{
     private static String handleBardFormat(final long millis, final boolean trailingZero) {
         return (trailingZero ? DateTimeFormats.REMAINING_SECONDS_TRAILING : DateTimeFormats.REMAINING_SECONDS).get().format(millis * 0.001);
     }
+
     
-    @Override
-    public String getTitle() {
-        return ConfigurationService.SCOREBOARD_TITLE;
-    }
-    
-    @SuppressWarnings({ "deprecation", "unused" })
+	@SuppressWarnings("deprecation")
 	@Override
-    public List<SidebarEntry> getLines(final Player player) {
-        List<SidebarEntry> lines = new ArrayList<SidebarEntry>();
+    public List<String> getLignes(final Player player) {
+        List<String> lines = new ArrayList<String>();
         final EotwHandler.EotwRunnable eotwRunnable = this.plugin.getEotwHandler().getRunnable();
         final PvpClass pvpClass = this.plugin.getPvpClassManager().getEquippedClass(player);
         final EventTimer eventTimer = this.plugin.getTimerManager().eventTimer;
-        List<SidebarEntry> conquestLines = null;
+        List<String> conquestLines = null;
         final EventFaction eventFaction = eventTimer.getEventFaction();
         FactionUser user = HCF.getPlugin().getUserManager().getUser(player.getUniqueId());
+        lines.add("§6Kills: " + "§e" + user.getKills());
+        lines.add("§6Death: " + "§e" + user.getDeaths());
         if (pvpClass != null) {
             if (pvpClass instanceof BardClass || pvpClass instanceof AssassinClass || pvpClass instanceof ArcherClass) {
-                lines.add(new SidebarEntry(ChatColor.YELLOW.toString(), "Classe" + ChatColor.GOLD + " » ", ChatColor.WHITE + pvpClass.getName()));
+                lines.add(ChatColor.YELLOW.toString() + "Classe" + ChatColor.GOLD + " » " + ChatColor.WHITE + pvpClass.getName());
             }
             if (pvpClass instanceof BardClass) {
                 final BardClass bardClass = (BardClass)pvpClass;
-                lines.add(new SidebarEntry(ChatColor.GOLD + " * ", ChatColor.YELLOW + "Energie", ChatColor.GOLD + ": " + ChatColor.WHITE + handleBardFormat(bardClass.getEnergyMillis(player), true)));
+                lines.add(ChatColor.GOLD + " * " + ChatColor.YELLOW + "Energie" + ChatColor.GOLD + ": " + ChatColor.WHITE + handleBardFormat(bardClass.getEnergyMillis(player), true));
                 final long remaining2 = bardClass.getRemainingBuffDelay(player);
                 if (remaining2 > 0L) {
-                    lines.add(new SidebarEntry(ChatColor.GOLD + " * ", ChatColor.YELLOW + "Cooldown", ChatColor.GOLD + ": " + ChatColor.WHITE + HCF.getRemaining(remaining2, true)));
+                    lines.add(ChatColor.GOLD + " * " + ChatColor.YELLOW + "Cooldown" + ChatColor.GOLD + ": " + ChatColor.WHITE + HCF.getRemaining(remaining2, true));
                 }
             }
             else if (pvpClass instanceof ArcherClass) {
-                final ArcherClass archerClass = (ArcherClass)pvpClass;
                 if (ArcherClass.tagged.containsValue(player.getUniqueId())) {
                     for (final UUID uuid : ArcherClass.tagged.keySet()) {
                         if (ArcherClass.tagged.get(uuid).equals(player.getUniqueId()) && Bukkit.getPlayer(uuid) != null) {
-                            lines.add(new SidebarEntry(ChatColor.GOLD + " * " + ChatColor.YELLOW.toString(), "Tag" + ChatColor.GOLD + ": ", ChatColor.RED + Bukkit.getPlayer(uuid).getName()));
+                            lines.add(ChatColor.GOLD + " * " + ChatColor.YELLOW.toString()+ "Tag" + ChatColor.GOLD + ": "+ ChatColor.RED + Bukkit.getPlayer(uuid).getName());
                         }
                     }
                 }
             }
         }
        if(user.getTrackingUser() != null){
-            lines.add(new SidebarEntry(ChatColor.GOLD.toString() + "* " + ChatColor.YELLOW + "Victime" + ChatColor.GRAY + ": "));
+            lines.add(ChatColor.GOLD.toString() + "* " + ChatColor.YELLOW + "Victime" + ChatColor.GRAY + ": ");
             if(!user.getTrackingUser().isOnline()){       
-                lines.add(new SidebarEntry(ChatColor.RED.toString() +  user.getTrackingUserName()));
+                lines.add(ChatColor.RED.toString() +  user.getTrackingUserName());
                 this.curentCoordsMessage.remove(player);
                 this.lastCoordsUpdate.remove(player);
             } else {
-                lines.add(new SidebarEntry(ChatColor.GREEN.toString() +  user.getTrackingUser().getName()));
-             	lines.add(new SidebarEntry(ChatColor.GOLD.toString() + "* " + ChatColor.YELLOW + "Faction" + ChatColor.GRAY + ": "));
+                lines.add(ChatColor.GREEN.toString() +  user.getTrackingUser().getName());
+             	lines.add(ChatColor.GOLD.toString() + "* " + ChatColor.YELLOW + "Faction" + ChatColor.GRAY + ": ");
             	 if(HCF.getPlugin().getFactionManager().getPlayerFaction(user.getTrackingUser()) == null){
-                 	lines.add(new SidebarEntry(ChatColor.RED, "Aucune", ChatColor.GRAY));
+                 	lines.add(ChatColor.RED+ "Aucune"+ ChatColor.GRAY);
             	 } else {
-                  	lines.add(new SidebarEntry(ChatColor.GRAY.toString(), HCF.getPlugin().getFactionManager().getPlayerFaction(user.getTrackingUser()).getName(), ChatColor.GRAY.toString()));
+                  	lines.add(ChatColor.GRAY.toString()+ HCF.getPlugin().getFactionManager().getPlayerFaction(user.getTrackingUser()).getName()+ ChatColor.GRAY.toString());
                  }
-                double aproxX = this.randInt(-25, 25);
-     			double aproxZ = this.randInt(-25, 25);
-     			double X = aproxX > 25 ? user.getTrackingUser().getLocation().getBlockX() + aproxX : user.getTrackingUser().getLocation().getBlockX() - aproxX;
-     			double Z = aproxZ > 25 ? user.getTrackingUser().getLocation().getBlockZ() + aproxZ : user.getTrackingUser().getLocation().getBlockZ() - aproxZ;
-             	lines.add(new SidebarEntry(ChatColor.GOLD.toString() + "* " + ChatColor.YELLOW + "Coords" + ChatColor.GRAY + ": "));
-             	lines.add(new SidebarEntry(ChatColor.GRAY, this.getApproxCoords(player, user.getTrackingUser()) , ChatColor.GRAY));
-             	lines.add(new SidebarEntry(ChatColor.GOLD.toString() + "* " + ChatColor.YELLOW + "Territoire" + ChatColor.GRAY + ":"));
-             	lines.add(new SidebarEntry(ChatColor.GRAY, HCF.getPlugin().getFactionManager().getFactionAt(user.getTrackingUser().getLocation()).getName(), ChatColor.GRAY));
-             	lines.add(new SidebarEntry(ChatColor.GOLD.toString() + "* " + ChatColor.YELLOW + "Monde" + ChatColor.GRAY + ": "));
-             	lines.add(new SidebarEntry(ChatColor.GRAY, user.getTrackingUser().getLocation().getWorld().getEnvironment() , ChatColor.GRAY));
+             	lines.add(ChatColor.GOLD.toString() + "* " + ChatColor.YELLOW + "Coords" + ChatColor.GRAY + ": ");
+             	lines.add(ChatColor.GRAY+ this.getApproxCoords(player, user.getTrackingUser()) + ChatColor.GRAY);
+             	lines.add(ChatColor.GOLD.toString() + "* " + ChatColor.YELLOW + "Territoire" + ChatColor.GRAY + ":");
+             	lines.add(ChatColor.GRAY+ HCF.getPlugin().getFactionManager().getFactionAt(user.getTrackingUser().getLocation()).getName()+ ChatColor.GRAY);
+             	lines.add(ChatColor.GOLD.toString() + "* " + ChatColor.YELLOW + "Monde" + ChatColor.GRAY + ": ");
+             	lines.add(ChatColor.GRAY+ user.getTrackingUser().getLocation().getWorld().getName() + ChatColor.GRAY);
 
             }	
         }
@@ -146,9 +139,9 @@ public class TimerSidebarProvider implements SidebarProvider{
                 }
                 String timerName = playerTimer.getName();
                 if (timerName.length() > 14) {
-                    timerName = timerName.substring(0, timerName.length());
+                    timerName = timerName.substring(0+ timerName.length());
                 }
-                lines.add(new SidebarEntry(playerTimer.getScoreboardPrefix(), timerName + ChatColor.GOLD, " » " + ChatColor.WHITE + HCF.getRemaining(remaining2, true)));
+                lines.add(playerTimer.getScoreboardPrefix()+ timerName + ChatColor.GOLD+ " » " + ChatColor.WHITE + HCF.getRemaining(remaining2, true));
             }
             if (timer instanceof GlobalTimer) {
                 final GlobalTimer playerTimer2 = (GlobalTimer)timer;
@@ -158,34 +151,34 @@ public class TimerSidebarProvider implements SidebarProvider{
                 }
                 String timerName = playerTimer2.getName();
                 if (timerName.length() > 14) {
-                    timerName = timerName.substring(0, timerName.length());
+                    timerName = timerName.substring(0+ timerName.length());
                 }
-                lines.add(new SidebarEntry(playerTimer2.getScoreboardPrefix(), timerName + ChatColor.GRAY, " » " + ChatColor.RED + HCF.getRemaining(remaining2, true)));
+                lines.add(playerTimer2.getScoreboardPrefix()+ timerName + ChatColor.GRAY+ " » " + ChatColor.RED + HCF.getRemaining(remaining2, true));
             }
         }
         if (eotwRunnable != null) {
             long remaining3 = eotwRunnable.getTimeUntilStarting();
             if (remaining3 > 0L) {
-                lines.add(new SidebarEntry(ChatColor.DARK_RED.toString() + ChatColor.BOLD, "EOTW" + ChatColor.RED + " (Début", ") " + ChatColor.GRAY + " » " + ChatColor.RED + HCF.getRemaining(remaining3, true)));
+                lines.add(ChatColor.DARK_RED.toString() + ChatColor.BOLD+ "EOTW" + ChatColor.RED + " (Début"+ ") " + ChatColor.GRAY + " » " + ChatColor.RED + HCF.getRemaining(remaining3, true));
             }
             else if ((remaining3 = eotwRunnable.getTimeUntilCappable()) > 0L) {
-                lines.add(new SidebarEntry(ChatColor.DARK_RED.toString() + ChatColor.BOLD, "EOTW" + ChatColor.RED + " (Capture", ") " + ChatColor.GRAY + " » " + ChatColor.RED + HCF.getRemaining(remaining3, true)));
+                lines.add(ChatColor.DARK_RED.toString() + ChatColor.BOLD+ "EOTW" + ChatColor.RED + " (Capture"+ ") " + ChatColor.GRAY + " » " + ChatColor.RED + HCF.getRemaining(remaining3, true));
             }
         }
         if (eventFaction instanceof ConquestFaction) {
-            lines.add(lines.size(), new SidebarEntry(ChatColor.GRAY, ChatColor.STRIKETHROUGH + TimerSidebarProvider.STRAIGHT_LINE, ChatColor.STRIKETHROUGH + TimerSidebarProvider.STRAIGHT_LINE));
+            lines.add("§2"+ ChatColor.GRAY+ ChatColor.STRIKETHROUGH + TimerSidebarProvider.STRAIGHT_LINE+ ChatColor.STRIKETHROUGH + TimerSidebarProvider.STRAIGHT_LINE);
             final ConquestFaction conquestFaction = (ConquestFaction)eventFaction;
             //final DecimalFormat format = TimerSidebarProvider.CONQUEST_FORMATTER.get();
-            conquestLines = new ArrayList<SidebarEntry>();
-            lines.add(new SidebarEntry(ChatColor.YELLOW.toString() + ChatColor.BOLD, conquestFaction.getName() + ChatColor.GRAY, " »"));
+            conquestLines = new ArrayList<String>();
+            lines.add(ChatColor.YELLOW.toString() + ChatColor.BOLD+ conquestFaction.getName() + ChatColor.GRAY+ " »");
             final ConquestTracker conquestTracker = (ConquestTracker)conquestFaction.getEventType().getEventTracker();
             int count = 0;
             for (final Map.Entry<PlayerFaction, Integer> entry : conquestTracker.getFactionPointsMap().entrySet()) {
                 String factionName = entry.getKey().getDisplayName((CommandSender)player);
                 if (factionName.length() > 14) {
-                    factionName = factionName.substring(0, 14);
+                    factionName = factionName.substring(0+ 14);
                 }
-                lines.add(new SidebarEntry("  " + ChatColor.RED, factionName, ChatColor.GRAY + " » " + ChatColor.WHITE + entry.getValue()));
+                lines.add("  " + ChatColor.RED+ factionName+ ChatColor.GRAY + " » " + ChatColor.WHITE + entry.getValue());
                 if (++count == 3) {
                     break;
                 }
@@ -193,15 +186,15 @@ public class TimerSidebarProvider implements SidebarProvider{
         } 
         
         if(player.hasPermission("heaven.staff") && StaffMode.isInStaffMode(player)){
-        	lines.add(new SidebarEntry(ChatColor.GOLD.toString(), "Vanish" + ChatColor.GRAY + " » ", Core.getPlugin().getUserManager().getPlayer(player).isVanished() ? (ChatColor.GREEN + "Activé") : (ChatColor.RED + "Désactivé")));
+        	lines.add(ChatColor.GOLD.toString()+ "Vanish" + ChatColor.GRAY + " » "+ (Core.getPlugin().getUserManager().getPlayer(player).isVanished() ? (ChatColor.GREEN + "Activé") : (ChatColor.RED + "Désactivé")));
         }
         if (conquestLines != null && !conquestLines.isEmpty()) {
             conquestLines.addAll(lines);
             lines = conquestLines;
         }
         if (!lines.isEmpty()) {
-            lines.add(0, new SidebarEntry(ChatColor.DARK_GRAY, TimerSidebarProvider.STRAIGHT_LINE, TimerSidebarProvider.STRAIGHT_LINE));
-            lines.add(lines.size(), new SidebarEntry(ChatColor.DARK_GRAY, ChatColor.STRIKETHROUGH + TimerSidebarProvider.STRAIGHT_LINE, TimerSidebarProvider.STRAIGHT_LINE));
+            lines.add("§0" +  ChatColor.DARK_GRAY+ TimerSidebarProvider.STRAIGHT_LINE+ TimerSidebarProvider.STRAIGHT_LINE);
+            lines.add("§1"+ ChatColor.DARK_GRAY+ ChatColor.STRIKETHROUGH + TimerSidebarProvider.STRAIGHT_LINE+ TimerSidebarProvider.STRAIGHT_LINE);
         }
         return lines;
     }
@@ -230,7 +223,8 @@ public class TimerSidebarProvider implements SidebarProvider{
                 return new DecimalFormat("00.0");
             }
         };
-        EMPTY_ENTRY_FILLER = new SidebarEntry(" ", " ", " ");
+        EMPTY_ENTRY_FILLER = " ";
         STRAIGHT_LINE = BukkitUtils.STRAIGHT_LINE_DEFAULT.substring(0, 11);
     }
+
 }

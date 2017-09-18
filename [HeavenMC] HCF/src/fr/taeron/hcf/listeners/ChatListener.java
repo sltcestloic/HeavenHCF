@@ -9,7 +9,6 @@ import org.heavenmc.core.Core;
 import org.apache.commons.lang.*;
 import fr.taeron.hcf.faction.struct.*;
 import fr.taeron.hcf.faction.type.*;
-import fr.taeron.hcf.scoreboard.ScoreboardHandler;
 
 import org.bukkit.entity.*;
 import org.bukkit.*;
@@ -95,7 +94,7 @@ public class ChatListener implements Listener
 		final ConsoleCommandSender console = Bukkit.getConsoleSender();
 		if(!(player.hasPermission("heaven.staff"))){
 			if (message.contains("卍") || message.toLowerCase().contains("pute") || message.toLowerCase().contains("go spam") || message.toLowerCase().contains("tp mod") || message.toLowerCase().contains("mod tp") || message.toLowerCase().contains("cancer") || message.toLowerCase().contains("admin?") || message.toLowerCase().contains("admin ?")|| message.toLowerCase().contains("plugins leak") || message.toLowerCase().contains("ntm") || message.toLowerCase().contains("fdp") || message.toLowerCase().contains("ddos") || message.toLowerCase().contains("http://") || message.toLowerCase().contains("https://") || message.toLowerCase().contains("www.") || message.toLowerCase().contains(".fr") || message.toLowerCase().contains(".net") || message.toLowerCase().contains(".com") || message.toLowerCase().contains(".org")) {
-				event.getRecipients().removeAll(ScoreboardHandler.getOnline());
+				event.getRecipients().removeAll(Arrays.asList(Bukkit.getOnlinePlayers()));
 				if(event.getPlayer().hasPermission("heaven.vip") || event.getPlayer().hasPermission("heaven.pro") || event.getPlayer().hasPermission("heaven.elite") || event.getPlayer().hasPermission("heaven.staff") || event.getPlayer().hasPermission("heaven.emerald")){
 					event.getPlayer().sendMessage(displayName + " §7» " + ChatColor.WHITE + message);
 				} else {
