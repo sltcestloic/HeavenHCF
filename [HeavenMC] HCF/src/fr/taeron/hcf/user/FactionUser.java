@@ -2,10 +2,8 @@ package fr.taeron.hcf.user;
 
 import org.bukkit.configuration.serialization.*;
 
-import fr.taeron.hcf.HCF;
 import fr.taeron.hcf.deathban.*;
 import fr.taeron.hcf.kits.Kit;
-import fr.taeron.hcf.scoreboard.provider.TimerSidebarProvider;
 import net.minecraft.util.gnu.trove.map.TObjectIntMap;
 import net.minecraft.util.gnu.trove.map.TObjectLongMap;
 import net.minecraft.util.gnu.trove.map.hash.TObjectIntHashMap;
@@ -18,12 +16,10 @@ import com.google.common.collect.*;
 
 import java.util.*;
 import org.bukkit.entity.*;
-import org.heavenmc.core.Core;
-import org.heavenmc.core.user.HeavenUser;
 import org.heavenmc.core.util.GenericUtils;
 import org.bukkit.*;
 
-public class FactionUser extends HeavenUser implements ConfigurationSerializable  {
+public class FactionUser implements ConfigurationSerializable  {
 	
     private Set<UUID> factionChatSpying;
     private Set<String> shownScoreboardScores;
@@ -53,8 +49,7 @@ public class FactionUser extends HeavenUser implements ConfigurationSerializable
     private int id;
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
-	public FactionUser(UUID userUUID, int i) {
-    	super(userUUID, i);
+	public FactionUser(UUID userUUID) {
         this.factionChatSpying = new HashSet<UUID>();
         this.shownScoreboardScores = new HashSet<String>();
         this.showLightning = true;
@@ -74,13 +69,10 @@ public class FactionUser extends HeavenUser implements ConfigurationSerializable
         this.deaths = 0;
         this.kitUseMap = new TObjectIntHashMap();
         this.kitCooldownMap = new TObjectLongHashMap();
-        this.setScoreboard(new TimerSidebarProvider(HCF.getPlugin()));
-        Core.getInstance().getPlayerManager().addPlayer(this, Bukkit.getPlayer(userUUID));
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public FactionUser(Map<String, Object> map) {   
-    	super(UUID.fromString((String) map.get("userUUID")), HCF.getPlugin().getPlayerId(UUID.fromString((String) map.get("userUUID"))));
     	this.kitUseMap = new TObjectIntHashMap();
         this.kitCooldownMap = new TObjectLongHashMap();
         this.factionChatSpying = new HashSet<UUID>();
@@ -111,8 +103,6 @@ public class FactionUser extends HeavenUser implements ConfigurationSerializable
         for (Map.Entry<String, String> entry2 : GenericUtils.castMap(map.get("kit-cooldown-map"), String.class, String.class).entrySet()) {
             this.kitCooldownMap.put(UUID.fromString(entry2.getKey()), Long.parseLong(entry2.getValue()));
         }
-        this.setScoreboard(new TimerSidebarProvider(HCF.getPlugin()));
-        Core.getInstance().getPlayerManager().addPlayer(this, Bukkit.getPlayer(userUUID));
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -294,10 +284,4 @@ public class FactionUser extends HeavenUser implements ConfigurationSerializable
     public Player getPlayer() {
         return Bukkit.getPlayer(this.userUUID);
     }
-
-	@Override
-	public String getTeamFor(Player arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

@@ -12,11 +12,11 @@ public class HCFSQLManager extends MySQLManager{
 
 	@Override
 	public void loadPlayer(Player p) {
-		this.loadInfos(HCF.getPlugin().getUserManager().getUser(p.getUniqueId()));
+		this.loadInfos(HCF.getPlugin().getCompatUserManager().getPlayer(p));
 	}
 
 	@Override
 	public void saveData(Player p) {
-		this.saveSettings(HCF.getPlugin().getUserManager().getUser(p.getUniqueId()));
+		this.saveSettings(HCF.getPlugin().getCompatUserManager().getPlayer(p));
 	}
 }

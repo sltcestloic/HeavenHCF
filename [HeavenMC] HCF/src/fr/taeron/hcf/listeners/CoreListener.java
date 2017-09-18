@@ -18,15 +18,14 @@ public class CoreListener implements Listener
     public CoreListener(final HCF plugin) {
         this.plugin = plugin;
     }
-    
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        event.setJoinMessage(null);
-    }
+
     
     @EventHandler
-    public void onLogin(PlayerJoinEvent e){
+    public void onJoin(PlayerJoinEvent e){
+        e.setJoinMessage(null);
         HCF.getPlugin().getSQLManager().loadPlayer(e.getPlayer());
+        HCF.getPlugin().getCompatUserManager().removePlayer(e.getPlayer());
+        // JEAN ALED HCF.getPlugin().getCompatUserManager().registerPlayer(event.getPlayer(), REQUETE SQL POUR L'ID);
     }
     
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)

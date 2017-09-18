@@ -95,6 +95,7 @@ public class HCF extends JavaPlugin{
     private KitManager kitManager;
     private HCFSQLManager sqlManager;
     private ScoreboardManager scoreboardManager;
+    private CompatUserManager compatManager;
       
     public HCF() {
         this.random = new Random();
@@ -324,6 +325,7 @@ public class HCF extends JavaPlugin{
         this.sqlManager = new HCFSQLManager(this);
         this.scoreboardManager = new ScoreboardManager(this, "§6§lHeavenHCF §e[Map 4]");
         this.scoreboardManager.runTaskTimerAsynchronously(this, 0, 20);
+        this.compatManager = new CompatUserManager();
     }
     
     public ScoreboardManager getScoreboardManager(){
@@ -422,6 +424,10 @@ public class HCF extends JavaPlugin{
     
     public HCFSQLManager getSQLManager(){
     	return this.sqlManager;
+    }
+    
+    public CompatUserManager getCompatUserManager(){
+    	return this.compatManager;
     }
     
     static {

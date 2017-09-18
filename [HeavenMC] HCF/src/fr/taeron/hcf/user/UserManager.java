@@ -3,9 +3,7 @@ package fr.taeron.hcf.user;
 import fr.taeron.hcf.*;
 
 import org.bukkit.plugin.*;
-import org.heavenmc.core.Core;
 import org.heavenmc.core.util.Config;
-import org.heavenmc.core.util.GuavaCompat;
 
 
 import org.bukkit.event.player.*;
@@ -15,9 +13,6 @@ import org.bukkit.configuration.*;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 public class UserManager implements Listener
@@ -45,17 +40,7 @@ public class UserManager implements Listener
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final UUID uuid = event.getPlayer().getUniqueId();
-        java.sql.Connection c = Core.getInstance().getConnection();
-		try {
-			PreparedStatement s = c.prepareStatement("SELECT * FROM `players` WHERE uuid = ?");
-			s.setString(1, event.getPlayer().getUniqueId().toString());
-			ResultSet rs = s.executeQuery();
-			if (rs.next()) {
-				int playerid = rs.getInt("playerid");
-				this.users.putIfAbsent(uuid, new FactionUser(event.getPlayer().getUniqueId(), playerid));
-			}
-		} catch (SQLException e){
-		}
+        this.users.putIfAbsent(uuid, new FactionUser(event.getPlayer().getUniqueId()));
         Bukkit.getScheduler().runTaskLater(HCF.getPlugin(), new Runnable(){
 			@Override
 			public void run() {
@@ -75,39 +60,11 @@ public class UserManager implements Listener
     
 	public FactionUser getUserAsync(final UUID uuid) {
         synchronized (this.users) {
-            final FactionUser revert;
-            java.sql.Connection c = Core.getInstance().getConnection();
-            FactionUser user;
-    		try {
-    			PreparedStatement s = c.prepareStatement("SELECT * FROM `players` WHERE uuid = ?");
-    			s.setString(1, uuid.toString());
-    			ResultSet rs = s.executeQuery();
-    			if (rs.next()) {
-    				int playerid = rs.getInt("playerid");
-    				user = this.users.putIfAbsent(uuid, revert = new FactionUser(uuid, playerid));
-    		        return (FactionUser)GuavaCompat.firstNonNull(user, revert);
-    			}
-    		} catch (SQLException e){
-    		}
             return this.users.get(uuid);
         }
     }
     
     public FactionUser getUser(final UUID uuid) {
-        final FactionUser revert;
-        java.sql.Connection c = Core.getInstance().getConnection();
-        FactionUser user;
-		try {
-			PreparedStatement s = c.prepareStatement("SELECT * FROM `players` WHERE uuid = ?");
-			s.setString(1, uuid.toString());
-			ResultSet rs = s.executeQuery();
-			if (rs.next()) {
-				int playerid = rs.getInt("playerid");
-				user = this.users.putIfAbsent(uuid, revert = new FactionUser(uuid, playerid));
-		        return (FactionUser)GuavaCompat.firstNonNull(user, revert);
-			}
-		} catch (SQLException e){
-		}
 		return this.users.get(uuid);
     }
     
