@@ -146,7 +146,7 @@ public class PortalListener implements Listener
                 return;
             }
             event.useTravelAgent(false);
-            event.setTo(new Location(toWorld, 0, 34, 300));
+            event.setTo(new Location(toWorld, 0, 61, 300));
         }
     }
     
