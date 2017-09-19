@@ -2,6 +2,10 @@ package fr.taeron.hcf.listeners;
 
 import fr.taeron.hcf.*;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
@@ -10,6 +14,8 @@ import org.bukkit.event.*;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.heavenmc.core.Core;
 
 public class CoreListener implements Listener
 {
@@ -23,9 +29,36 @@ public class CoreListener implements Listener
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         e.setJoinMessage(null);
-        HCF.getPlugin().getSQLManager().loadPlayer(e.getPlayer());
-        HCF.getPlugin().getCompatUserManager().removePlayer(e.getPlayer());
-        // JEAN ALED HCF.getPlugin().getCompatUserManager().registerPlayer(event.getPlayer(), REQUETE SQL POUR L'ID);
+        new BukkitRunnable() {
+			
+			@Override
+			public void run() {
+				try {
+					java.sql.Connection c = Core.getInstance().getConnection();
+					int playerid = 0;
+					PreparedStatement s = c.prepareStatement("SELECT playerid FROM `players` WHERE uuid = ?");
+					s.setString(1, e.getPlayer().getUniqueId().toString());
+					ResultSet rs = s.executeQuery();
+					if (rs.next()) {
+						playerid = rs.getInt("playerid");
+						HCF.getPlugin().getCompatUserManager().registerPlayer(e.getPlayer(), playerid);
+				        HCF.getPlugin().getSQLManager().loadPlayer(e.getPlayer());
+					} else {
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								e.getPlayer().kickPlayer("§cErreur lors du chargement de tes données.");
+							}
+						}.runTask(HCF.getPlugin());
+					}
+					rs.close();
+					s.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				
+			}
+		}.runTaskAsynchronously(HCF.getPlugin());
     }
     
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)

@@ -2,7 +2,6 @@ package fr.taeron.hcf.user;
 
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.heavenmc.core.Core;
 import org.heavenmc.core.user.HeavenUser;
@@ -15,7 +14,7 @@ public class CompatUser extends HeavenUser{
 	public CompatUser(UUID u, int id) {
 		super(u, id);
 		this.setScoreboard(new TimerSidebarProvider(HCF.getPlugin()));
-        Core.getInstance().getPlayerManager().addPlayer(this, Bukkit.getPlayer(u));
+        Core.getInstance().getPlayerManager().addPlayer(this, this.getPlayer());
 	}
 
 	@Override

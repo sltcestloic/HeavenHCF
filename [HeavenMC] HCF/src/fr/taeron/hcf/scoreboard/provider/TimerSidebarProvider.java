@@ -82,8 +82,8 @@ public class TimerSidebarProvider implements ScoreboardProvider{
         List<String> conquestLines = null;
         final EventFaction eventFaction = eventTimer.getEventFaction();
         FactionUser user = HCF.getPlugin().getUserManager().getUser(player.getUniqueId());
-        lines.add("§6Kills: " + "§e" + user.getKills());
-        lines.add("§6Death: " + "§e" + user.getDeaths());
+        lines.add("§eKills: " + "§r" + user.getKills());
+        lines.add("§eMorts: " + "§r" + user.getDeaths());
         if (pvpClass != null) {
             if (pvpClass instanceof BardClass || pvpClass instanceof AssassinClass || pvpClass instanceof ArcherClass) {
                 lines.add(ChatColor.YELLOW.toString() + "Classe" + ChatColor.GOLD + " » " + ChatColor.WHITE + pvpClass.getName());
@@ -192,9 +192,9 @@ public class TimerSidebarProvider implements ScoreboardProvider{
             conquestLines.addAll(lines);
             lines = conquestLines;
         }
+        lines.add("§0" +  ChatColor.GRAY+ TimerSidebarProvider.STRAIGHT_LINE+ TimerSidebarProvider.STRAIGHT_LINE);
+        lines.add("§eRegion: " + HCF.getPlugin().getFactionManager().getFactionAt(player.getLocation()).getDisplayName(player));
         if (!lines.isEmpty()) {
-            lines.add("§0" +  ChatColor.DARK_GRAY+ TimerSidebarProvider.STRAIGHT_LINE+ TimerSidebarProvider.STRAIGHT_LINE);
-            lines.add("§1"+ ChatColor.DARK_GRAY+ ChatColor.STRIKETHROUGH + TimerSidebarProvider.STRAIGHT_LINE+ TimerSidebarProvider.STRAIGHT_LINE);
         }
         return lines;
     }
