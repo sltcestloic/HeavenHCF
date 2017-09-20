@@ -17,7 +17,7 @@ public class BeaconStrengthFixListener implements Listener
                 event.setCancelled(true);
             }
         }
-        if (entity instanceof Player && event.getCause() == PotionEffectAddEvent.EffectCause.SPLASH_POTION) {
+        if (entity instanceof Player && event.getCause() == PotionEffectAddEvent.EffectCause.POTION_SPLASH) {
         	final PotionEffect effect = event.getEffect();
         	if(effect.getType().equals((Object)PotionEffectType.INCREASE_DAMAGE)) {
         		event.setCancelled(true);

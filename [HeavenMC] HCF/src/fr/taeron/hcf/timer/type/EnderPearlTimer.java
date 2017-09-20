@@ -12,6 +12,7 @@ import org.bukkit.projectiles.*;
 import org.bukkit.event.*;
 import org.bukkit.event.player.*;
 import org.bukkit.craftbukkit.v1_7_R4.inventory.*;
+import java.text.DecimalFormat;
 import java.util.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.inventory.*;
@@ -201,7 +202,7 @@ public class EnderPearlTimer extends PlayerTimer implements Listener{
                 net.minecraft.server.v1_7_R4.ItemStack item = NmsUtils.getDirectNmsItemstack(stack);
                 if (remaining > 0L) {
                     item = item.cloneItemStack();
-                    item.c(ChatColor.YELLOW + "Enderpearl Cooldown: " + ChatColor.RED + HCF.getRemaining(remaining, true, true));
+                    item.c(ChatColor.YELLOW + "Enderpearl Cooldown: " + ChatColor.RED + new DecimalFormat("0").format(remaining / 1000) + "s");
                     this.setFakeItem(item, this.player.getInventory().getHeldItemSlot());
                 }
                 else {

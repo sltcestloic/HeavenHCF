@@ -103,7 +103,7 @@ public class PotionLimitListener implements Listener
     
     @EventHandler
     public void test(PotionEffectAddEvent e){
-    	if(e.getCause() == EffectCause.SPLASH_POTION && e.getEffect().getDuration() > 680){
+    	if(e.getCause() == EffectCause.POTION_SPLASH && e.getEffect().getDuration() > 680){
     		e.setCancelled(true);
     	}
     }
