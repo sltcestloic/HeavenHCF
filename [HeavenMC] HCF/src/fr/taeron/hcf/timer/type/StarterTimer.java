@@ -35,7 +35,7 @@ public class StarterTimer extends PlayerTimer implements Listener{
     private final HCF plugin;
     
     public StarterTimer(final HCF plugin) {
-        super("Starter Timer", TimeUnit.MINUTES.toMillis(60L));
+        super("Start", TimeUnit.MINUTES.toMillis(90L));
         this.legible = new HashSet<UUID>();
         this.plugin = plugin;
     }
@@ -165,6 +165,7 @@ public class StarterTimer extends PlayerTimer implements Listener{
                 player.sendMessage(ChatColor.GREEN + "");
                 this.setCooldown(player, player.getUniqueId());
                 this.setPaused(player, player.getUniqueId(), true);
+                HCF.getPlugin().getTimerManager().pvpProtectionTimer.legible.remove(player.getUniqueId());
             }
         }
         else if (this.isPaused(player) && this.getRemaining(player) > 0L && !this.plugin.getFactionManager().getFactionAt(event.getSpawnLocation()).isSafezone()) {
@@ -184,6 +185,7 @@ public class StarterTimer extends PlayerTimer implements Listener{
         if (fromFaction.isSafezone() && !toFaction.isSafezone()) {
             if (this.legible.remove(player.getUniqueId())) {
                 this.setCooldown(player, player.getUniqueId());
+                this.setPaused(player, player.getUniqueId(), false);
                 player.sendMessage(ChatColor.GREEN + "Ton Starter Timer a commencé.");
                 return;
             }

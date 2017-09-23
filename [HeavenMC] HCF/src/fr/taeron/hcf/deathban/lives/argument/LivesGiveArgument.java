@@ -23,6 +23,7 @@ public class LivesGiveArgument extends CommandArgument{
         return '/' + label + ' ' + this.getName() + " <joueur> <nombre>";
     }
     
+	@SuppressWarnings("deprecation")
 	public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (args.length < 3) {
             sender.sendMessage(ChatColor.RED + "Utilisation: " + this.getUsage(label));

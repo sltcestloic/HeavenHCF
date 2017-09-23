@@ -12,8 +12,8 @@ public class GlowstoneMountain {
 
 	@SuppressWarnings("deprecation")
 	public static void resetMountain() {
-        final Vector p1 = new Vector(168, 57, 156);
-        final Vector p2 = new Vector(172, 52, 160);
+        final Vector p1 = new Vector(-64, 89, 251);
+        final Vector p2 = new Vector(-61, 92, 248);
         final CuboidRegion cube = new CuboidRegion(p1, p2);
         final EditSession session = new EditSession(new BukkitWorld(Bukkit.getWorld("world_nether")), cube.getArea());
         try {

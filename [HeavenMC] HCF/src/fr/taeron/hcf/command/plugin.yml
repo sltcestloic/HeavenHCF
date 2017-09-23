@@ -1,0 +1,10 @@
+name: LaggManager
+main: com.compilex.patches.CompilexPatches
+version: 1.0
+commands:
+  laggreload:
+  laggregister:
+  laggunregister:
+  lagglist:
+  laggconfig:
+  laggreboot:

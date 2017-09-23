@@ -12,7 +12,7 @@ public class HeavenKey extends EnderChestKey{
 	
     @SuppressWarnings("deprecation")
 	public HeavenKey() {
-        super("Heaven", 3, new Location(Bukkit.getWorld("world"), -27, 75, -10));
+        super("Heaven", 3, new Location(Bukkit.getWorld("world"), -47, 83, 43));
         this.setupRarity(new ItemBuilder(Material.ENDER_PORTAL_FRAME, 1).displayName("§fEnd Portal Frame §7(1x)").build(), 5);
         this.setupRarity(new ItemBuilder(Material.ENDER_PORTAL_FRAME, 1).displayName("§fEnd Portal Frame §7(1x)").build(), 5);
         this.setupRarity(new ItemBuilder(Material.BREWING_STAND_ITEM, 3).displayName("§fBrewing Stand §7(x3)").build(), 5);

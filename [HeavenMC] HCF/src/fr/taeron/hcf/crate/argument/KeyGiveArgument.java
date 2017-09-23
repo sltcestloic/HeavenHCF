@@ -57,7 +57,7 @@ public class KeyGiveArgument extends CommandArgument{
             return true;
         }
         final ItemStack stack = key.getItemStack().clone();
-        final int maxAmount = 16;
+        final int maxAmount = 20;
         if (quantity > maxAmount) {
             sender.sendMessage(ChatColor.RED + "Tu ne peux pas donner plus de " + maxAmount + " clées");
             return true;

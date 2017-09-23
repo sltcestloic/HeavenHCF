@@ -28,11 +28,11 @@ import java.util.Map.Entry;
 
 import com.google.common.collect.*;
 
-@SuppressWarnings({"rawtypes", "unchecked", "deprecation"})
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class PlayerFaction extends ClaimableFaction implements Raidable{
 	
     private static final UUID[] EMPTY_UUID_ARRAY;
-    protected final Map requestedRelations;
+	protected final Map requestedRelations;
     protected final Map relations;
     protected final Map members;
     protected final Set<String> invitedPlayerNames;
@@ -56,7 +56,7 @@ public class PlayerFaction extends ClaimableFaction implements Raidable{
         this.focusing = null;
     }
     
-    public PlayerFaction(final Map map) {
+	public PlayerFaction(final Map map) {
         super(map);
         this.requestedRelations = new HashMap();
         this.relations = new HashMap();
@@ -528,13 +528,11 @@ public class PlayerFaction extends ClaimableFaction implements Raidable{
 	public void broadcast(final String[] messages, final UUID... ignore) {
         Preconditions.checkNotNull(messages, "Messages cannot be null");
         Preconditions.checkArgument(messages.length > 0, "Message array cannot be empty");
-        final Collection<Player> players = this.getOnlinePlayers();
+        final Collection<Player> players = Bukkit.getOnlinePlayers();
         final Collection<UUID> ignores = ((ignore.length == 0) ? Collections.emptySet() : Sets.newHashSet(ignore));
-        if(this.getOnlinePlayers() != null){
-	        for (final Player player : players) {
-	        	if(player != null && messages != null){
-	        		player.sendMessage(messages);      
-	        	}
+        for (final Player player : players) {
+        	if(player != null && messages != null){
+        		player.sendMessage(messages);      
 	        }
         }
     }

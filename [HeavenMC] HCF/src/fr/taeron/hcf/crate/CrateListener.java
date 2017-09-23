@@ -8,7 +8,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,7 +16,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
@@ -55,31 +53,56 @@ public class CrateListener implements Listener {
     	return true;
     }
     
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    /*@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onInventoryClose(InventoryCloseEvent event) {
         Inventory inventory = event.getInventory();
         Inventory topInventory = event.getView().getTopInventory();
         if (inventory != null && topInventory != null && topInventory.equals(inventory) && topInventory.getTitle().endsWith(" Crate")) {
             Player player = (Player)event.getPlayer();
-            Location location = player.getLocation();
+        	new BukkitRunnable(){
+        		public void run(){
+        			if(CrateListener.open.containsKey(player.getName()) && CrateListener.open.get(player.getName()).check() &&CrateListener.open.get(player.getName()).should()){
+        				//player.openInventory(event.getInventory());
+        			} else if (CrateListener.open.containsKey(player.getName())){
+        				Location location = player.getLocation();
+        	            World world = player.getWorld();
+        	            if(isInventoryFull(player) && topInventory.getItem(12) != null){
+        	            	world.dropItemNaturally(location, topInventory.getItem(12));
+        	            } else if (topInventory.getItem(12) != null) {
+        	            	player.getInventory().addItem(topInventory.getItem(12));
+        	            }
+        	            if(isInventoryFull(player) && topInventory.getItem(13) != null){
+        	            	world.dropItemNaturally(location, topInventory.getItem(13));
+        	            } else if (topInventory.getItem(13) != null) {
+        	            	player.getInventory().addItem(topInventory.getItem(13));
+        	            }
+        	            if(isInventoryFull(player) && topInventory.getItem(14) != null){
+        	            	world.dropItemNaturally(location, topInventory.getItem(14));
+        	            } else if (topInventory.getItem(14) != null) {
+        	            	player.getInventory().addItem(topInventory.getItem(14));
+        	            }
+        			}
+        		}
+        	}.runTaskLater(HCF.getPlugin(), 2l);
+          /*  Location location = player.getLocation();
             World world = player.getWorld();
             if(isInventoryFull(player) && topInventory.getItem(12) != null){
             	world.dropItemNaturally(location, topInventory.getItem(12));
-            } else {
+            } else if (topInventory.getItem(12) != null) {
             	player.getInventory().addItem(topInventory.getItem(12));
             }
             if(isInventoryFull(player) && topInventory.getItem(13) != null){
             	world.dropItemNaturally(location, topInventory.getItem(13));
-            } else {
+            } else if (topInventory.getItem(13) != null) {
             	player.getInventory().addItem(topInventory.getItem(13));
             }
             if(isInventoryFull(player) && topInventory.getItem(14) != null){
             	world.dropItemNaturally(location, topInventory.getItem(14));
-            } else {
+            } else if (topInventory.getItem(14) != null) {
             	player.getInventory().addItem(topInventory.getItem(14));
-            } 
-        }
-    }
+            } */
+       /* }
+    }*/
     
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onInventoryDrag(InventoryDragEvent event) {
@@ -153,41 +176,49 @@ public class CrateListener implements Listener {
         }
         Block block = event.getClickedBlock();
         if (key instanceof EnderChestKey && block.getType() == Material.ENDER_CHEST) {
-            InventoryView openInventory = player.getOpenInventory();
-            Inventory topInventory = openInventory.getTopInventory();
-            if (topInventory != null && topInventory.getTitle().endsWith(" Crate")) {
-                return;
-            }
-            EnderChestKey enderChestKey = (EnderChestKey)key;
-            if(enderChestKey.getLocation().getBlockX() != event.getClickedBlock().getLocation().getBlockX() ||
-            		enderChestKey.getLocation().getBlockZ() != event.getClickedBlock().getLocation().getBlockZ()){
-            	player.sendMessage("§cCette caisse semble pas vouloir s'ouvrir... peut-être n'as tu pas cliqué sur la bonne ?");
-            	return;
-            }
-            int rolls = enderChestKey.getRolls();
-            int size = InventoryUtils.getSafestInventorySize(27);
-            Inventory inventory = Bukkit.createInventory((InventoryHolder)player, size, enderChestKey.getName() + " Crate");
-            ItemStack[] loot = enderChestKey.getLoot();
-            if (loot == null) {
-                player.sendMessage(ChatColor.RED + "Cette clé n'a pas de loot défini, merci de contacter un admin.");
-                return;
-            }
-            List<ItemStack> finalLoot = new ArrayList<ItemStack>();
-            Random random = this.plugin.getRandom();
-            for (int i = 0; i < rolls; ++i) {
-                ItemStack item = loot[random.nextInt(loot.length)];
-                if (item != null && item.getType() != Material.AIR) {
-                    finalLoot.add(item);
-                    inventory.setItem(i, item);
-                }
-            }
-            player.openInventory(inventory);
-            Location location = block.getLocation();
-            CrateListener.open.put(event.getPlayer().getName(), new CrateTask.OpenCrate());   
-            CrateTask.startTask(event.getClickedBlock().getLocation(), event.getPlayer());
-            player.playSound(location, Sound.LEVEL_UP, 1.0f, 1.0f);
-            this.decrementHand(player);
-            event.setCancelled(true);
+        	 for(Key kk : HCF.getPlugin().getKeyManager().getKeys()){
+            	 if(kk instanceof EnderChestKey){
+            		 EnderChestKey ekey = (EnderChestKey) key;
+            		 if(ekey.getLocation().getBlockX() == block.getLocation().getBlockX() && ekey.getLocation().getBlockZ() == block.getLocation().getBlockZ()){
+			            InventoryView openInventory = player.getOpenInventory();
+			            Inventory topInventory = openInventory.getTopInventory();
+			            if (topInventory != null && topInventory.getTitle().endsWith(" Crate")) {
+			                return;
+			            }
+			            EnderChestKey enderChestKey = (EnderChestKey)key;
+			            if(enderChestKey.getLocation().getBlockX() != event.getClickedBlock().getLocation().getBlockX() ||
+			            		enderChestKey.getLocation().getBlockZ() != event.getClickedBlock().getLocation().getBlockZ()){
+			            	player.sendMessage("§cCette caisse semble pas vouloir s'ouvrir... peut-être n'as tu pas cliqué sur la bonne ?");
+			            	return;
+			            }
+			            int rolls = enderChestKey.getRolls();
+			            int size = InventoryUtils.getSafestInventorySize(27);
+			            Inventory inventory = Bukkit.createInventory((InventoryHolder)player, size, enderChestKey.getName() + " Crate");
+			            ItemStack[] loot = enderChestKey.getLoot();
+			            if (loot == null) {
+			                player.sendMessage(ChatColor.RED + "Cette clé n'a pas de loot défini, merci de contacter un admin.");
+			                return;
+			            }
+			            List<ItemStack> finalLoot = new ArrayList<ItemStack>();
+			            Random random = this.plugin.getRandom();
+			            for (int i = 0; i < rolls; ++i) {
+			                ItemStack item = loot[random.nextInt(loot.length)];
+			                if (item != null && item.getType() != Material.AIR) {
+			                    finalLoot.add(item);
+			                    inventory.setItem(i, item);
+			                }
+			            }
+			            player.openInventory(inventory);
+			            Location location = block.getLocation();
+			            CrateListener.open.put(event.getPlayer().getName(), new CrateTask.OpenCrate());   
+			            CrateTask.startTask(event.getClickedBlock().getLocation(), event.getPlayer());
+			            player.playSound(location, Sound.LEVEL_UP, 1.0f, 1.0f);
+			            this.decrementHand(player);
+			            event.setCancelled(true);
+			            return;
+            		 }
+            	 }
+        	 }
         }
     }
 }

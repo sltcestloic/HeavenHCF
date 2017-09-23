@@ -30,7 +30,6 @@ public class ChatListener implements Listener
         this.messageHistory = new MapMaker().makeMap();
     }
     
-    @SuppressWarnings("deprecation")
 	@EventHandler
     private final void onAsyncPlayerChat(final AsyncPlayerChatEvent event) {
         for (final Player player : Bukkit.getOnlinePlayers()) {

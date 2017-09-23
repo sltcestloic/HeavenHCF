@@ -62,7 +62,11 @@ public class DeathMessageListener implements Listener{
         Preconditions.checkNotNull((Object)entity, (Object)"Entity cannot be null");
         if (entity instanceof Player) {
             final Player player = (Player)entity;
-            return player.getName() + ChatColor.GRAY + '[' + ChatColor.GRAY + this.plugin.getUserManager().getUser(player.getUniqueId()).getKills() + ChatColor.GRAY + ']';
+            /*if(this.plugin.getUserManager().getUser(player.getUniqueId()) == null){
+            	
+                return "§7(Combat-Logger) §c" + player.getName() + ChatColor.GRAY + '[' + ChatColor.GRAY + (this.plugin.getUserManager().getUser(this.plugin.getNpcManager().getSpawnedNpc(player.getUniqueId()).getEntity().getUniqueId()) == null ? 0 : this.plugin.getUserManager().getUser(this.plugin.getNpcManager().getSpawnedNpc(player.getUniqueId()).getEntity().getUniqueId()).getKills()) + ChatColor.GRAY + ']';
+            }*/
+            return player.getName() + ChatColor.GRAY + '[' + ChatColor.GRAY + (this.plugin.getUserManager().getUser(player.getUniqueId()) == null ? 0 : this.plugin.getUserManager().getUser(player.getUniqueId()).getKills()) + ChatColor.GRAY + ']';
         }
         return WordUtils.capitalizeFully(entity.getType().name().replace('_', ' '));
     }

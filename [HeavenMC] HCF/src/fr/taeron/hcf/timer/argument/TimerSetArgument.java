@@ -71,7 +71,7 @@ public class TimerSetArgument extends CommandArgument{
         return true;
     }
     
-    @SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
+    @SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<String> onTabComplete(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (args.length == 2) {
             return (List<String>)FluentIterableCompat.from((Iterable)this.plugin.getTimerManager().getTimers()).filter((Predicate)new Predicate<Timer>() {

@@ -61,12 +61,17 @@ public class TrackerSearchArgument extends CommandArgument{
 				return false;
 			}
 		}
-		ArrayList<Player> rdn = new ArrayList<Player>();
-		for(Player randy : Bukkit.getOnlinePlayers()){
-			if(HCF.getPlugin().getFactionManager().getClaimAt(randy.getLocation()).getFaction().isDeathban() && HCF.getPlugin().getFactionManager().getPlayerFaction(randy) != null && HCF.getPlugin().getFactionManager().getPlayerFaction(randy) != HCF.getPlugin().getFactionManager().getPlayerFaction(p) && !HCF.getPlugin().getFactionManager().getPlayerFaction(p).getAlliedFactions().contains(HCF.getPlugin().getFactionManager().getPlayerFaction(randy))){
-				rdn.add(randy);
-			}
+		if(HCF.getPlugin().getFactionManager().getPlayerFaction(p) == null){
+			p.sendMessage("§cTu dois avoir une faction pour lancer une traque.");
+			return false;
 		}
+		ArrayList<Player> rdn = new ArrayList<Player>();
+		Bukkit.getOnlinePlayers().stream().filter(randy -> (HCF.getPlugin().getFactionManager().getFactionAt(randy.getLocation()).isDeathban()
+					&& HCF.getPlugin().getFactionManager().getPlayerFaction(randy) != null
+					&& HCF.getPlugin().getFactionManager().getPlayerFaction(randy) != HCF.getPlugin().getFactionManager().getPlayerFaction(p)
+					&& !HCF.getPlugin().getFactionManager().getPlayerFaction(p).getAlliedFactions().contains(HCF.getPlugin().getFactionManager().getPlayerFaction(randy))
+					&& HCF.getPlugin().getTimerManager().pvpProtectionTimer.getRemaining(randy) < 1
+					&& HCF.getPlugin().getTimerManager().starterTimer.getRemaining(randy) < 1)).forEach(randy -> rdn.add(randy));
 		if(rdn.size() < 1){
 			sender.sendMessage(ChatColor.RED + "Impossible de trouver un joueur à traquer, réessayes plus tard !");
 			return false;

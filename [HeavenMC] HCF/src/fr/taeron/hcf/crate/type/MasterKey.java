@@ -10,7 +10,7 @@ import org.bukkit.*;
 public class MasterKey extends EnderChestKey{
 	
     public MasterKey() {
-        super("Master", 2, new Location(Bukkit.getWorld("world"), -21, 75, -14));
+        super("Master", 2, new Location(Bukkit.getWorld("world"), -46, 83, 41));
         this.setupRarity(new ItemBuilder(Material.ENDER_PORTAL_FRAME, 5).displayName("§fEnd Portal Frame §7(5x)").build(), 5);
         this.setupRarity(new ItemBuilder(Material.ENDER_PORTAL_FRAME, 7).displayName("§fEnd Portal Frame §7(7x)").build(), 5);
         this.setupRarity(new ItemBuilder(Material.DIAMOND_BLOCK, 10).displayName("§fDiamond Block §7(x10)").build(), 5);

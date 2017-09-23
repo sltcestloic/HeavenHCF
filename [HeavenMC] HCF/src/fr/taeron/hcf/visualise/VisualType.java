@@ -18,7 +18,7 @@ public enum VisualType
                 @SuppressWarnings("deprecation")
 				@Override
                 VisualBlockData generate(final Player player, final Location location) {
-                    return new VisualBlockData(Material.STAINED_GLASS, DyeColor.LIGHT_BLUE.getData());
+                    return new VisualBlockData(Material.STAINED_GLASS, DyeColor.RED.getData());
                 }
             };
         }
@@ -36,7 +36,7 @@ public enum VisualType
                 @SuppressWarnings("deprecation")
 				@Override
                 VisualBlockData generate(final Player player, final Location location) {
-                    return new VisualBlockData(Material.STAINED_GLASS, DyeColor.LIGHT_BLUE.getData());
+                    return new VisualBlockData(Material.STAINED_GLASS, DyeColor.GRAY.getData());
                 }
             };
         }

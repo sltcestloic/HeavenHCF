@@ -10,7 +10,7 @@ import org.heavenmc.core.util.ItemBuilder;
 public class AquaKey extends EnderChestKey
 {
     public AquaKey() {
-        super("Aqua", 3, new Location(Bukkit.getWorld("world"), -19, 75, -10));
+        super("Aqua", 3, new Location(Bukkit.getWorld("world"), -46, 83, 45));
         this.setupRarity(new ItemBuilder(Material.DIAMOND_PICKAXE).enchant(Enchantment.DIG_SPEED, 3).enchant(Enchantment.LOOT_BONUS_BLOCKS, 2).enchant(Enchantment.DURABILITY, 3).build(), 5);
         this.setupRarity(new ItemBuilder(Material.DIAMOND_PICKAXE).enchant(Enchantment.DIG_SPEED, 3).enchant(Enchantment.SILK_TOUCH, 1).enchant(Enchantment.DURABILITY, 3).build(), 5);
         this.setupRarity(new ItemBuilder(Material.TRIPWIRE_HOOK).displayName(ChatColor.LIGHT_PURPLE + "Heaven Key").build(), 5);

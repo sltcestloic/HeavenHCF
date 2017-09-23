@@ -82,6 +82,7 @@ public class KitListener implements Listener{
                 String[] fakeLines = Arrays.copyOf(sign.getLines(), 4);
                 boolean applied = kit.applyTo(player, false, false);
                 if (applied) {
+                	player.updateInventory();
                     fakeLines[0] = ChatColor.GREEN + "Kit équipé";
                     fakeLines[1] = ChatColor.GREEN + "avec succès:";
                     fakeLines[2] = kit.getDisplayName();

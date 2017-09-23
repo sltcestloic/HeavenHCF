@@ -71,16 +71,28 @@ public class FlatFileDeathbanManager implements DeathbanManager
         if (!factionAt.isDeathban()) {
             duration /= 2L;
         }
-        if (player.hasPermission("heaven.vip")) {
-            duration = TimeUnit.MINUTES.toMillis(90L);
+        if (player.hasPermission("heaven")) {
+            duration = TimeUnit.MINUTES.toMillis(5L);
         }
-        if (player.hasPermission("heaven.pro")) {
-            duration = TimeUnit.MINUTES.toMillis(60L);
+        else if (player.hasPermission("master")) {
+            duration = TimeUnit.MINUTES.toMillis(15L);
         }
-        if (player.hasPermission("heaven.elite")) {
+        else if (player.hasPermission("hero")) {
             duration = TimeUnit.MINUTES.toMillis(30L);
         }
+        else if (player.hasPermission("elite")) {
+            duration = TimeUnit.MINUTES.toMillis(45L);
+        }
+        else if (player.hasPermission("premium")) {
+            duration = TimeUnit.MINUTES.toMillis(60L);
+        }
         return this.applyDeathBan(player.getUniqueId(), new Deathban(reason, Math.min(FlatFileDeathbanManager.MAX_DEATHBAN_TIME, duration), new PersistableLocation(location)));
+    }
+    
+    @Override
+    public Deathban applyDeathBan(final UUID player, final String reason) {
+        long duration = ConfigurationService.DEFAULT_DEATHBAN_DURATION;
+        return this.applyDeathBan(player, new Deathban(reason, Math.min(FlatFileDeathbanManager.MAX_DEATHBAN_TIME, duration), new PersistableLocation(Bukkit.getWorlds().get(0).getSpawnLocation())));
     }
     
     @Override

@@ -68,13 +68,16 @@ public class CombatLogListener implements Listener
     
 
     
-    @EventHandler(priority = EventPriority.LOWEST)
+    @SuppressWarnings("deprecation")
+	@EventHandler(priority = EventPriority.LOWEST)
     public void syncOffline(final PlayerDeathEvent event) {
         final Player player = event.getEntity();
         if (!this.plugin.getNpcPlayerHelper().isNpc(player)) {
             return;
         }
         CraftEventFactory.callPlayerDeathEvent((EntityPlayer)this.plugin.getNpcManager().getSpawnedNpc(player.getUniqueId()).getEntity().getPlayer(), event.getDrops(), "§7(Combat-Logger) " + event.getDeathMessage(), false);
+        HCF.getPlugin().getDeathbanManager().applyDeathBan(this.plugin.getNpcManager().getSpawnedNpc(player.getUniqueId()).getEntity().getUniqueId(), "§7(Combat-Logger) " + event.getDeathMessage());
+        player.setHealth(20);
         Bukkit.getScheduler().scheduleSyncDelayedTask((Plugin)this.plugin, (Runnable)new Runnable() {
             @Override
             public void run() {

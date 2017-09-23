@@ -46,6 +46,13 @@ public class PearlGlitchListener implements Listener
             //west = x+
             //north = z- 
             //south = z+
+            if(HCF.getPlugin().getFactionManager().getFactionAt(to).isSafezone()){
+            	event.setCancelled(true);
+            	event.getPlayer().getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
+            	event.getPlayer().sendMessage("§cTu ne peux pas pearl en safezone");
+            	HCF.getPlugin().getTimerManager().enderPearlTimer.clearCooldown(event.getPlayer());
+            	return;
+            }
 	        to.setX(to.getBlockX() + 0.5);
             to.setZ(to.getBlockZ() + 0.5);
             BlockFace face = UtilDirection.yawToFace(to.getYaw());

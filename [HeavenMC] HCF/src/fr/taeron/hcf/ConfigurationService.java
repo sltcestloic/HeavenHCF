@@ -17,7 +17,7 @@ public final class ConfigurationService
     public static final int WARZONE_RADIUS = 800;
     public static final String NAME = "HeavenMC";
     public static final String TEAMSPEAK_URL = "heavenmc.voice.vg";
-    public static final String DONATE_URL = "http://store.heavenmc.org/\r\n";
+    public static final String DONATE_URL = "http://heavenmc.org/store.php\r\n";
     public static final String SUBREDDIT_URL = "http://heavenmc.org/forum";
     public static final int SPAWN_BUFFER = 150;
     public static final double MAP_NUMBER = 1.0;
@@ -73,10 +73,10 @@ public final class ConfigurationService
         ConfigurationService.BORDER_SIZES.put(World.Environment.NORMAL, 3000);
         ConfigurationService.BORDER_SIZES.put(World.Environment.NETHER, 2000);
         ConfigurationService.BORDER_SIZES.put(World.Environment.THE_END, 1500);
-        ConfigurationService.SPAWN_RADIUS_MAP.put(World.Environment.NORMAL, 40.0);
+        ConfigurationService.SPAWN_RADIUS_MAP.put(World.Environment.NORMAL, 75.0);
         ConfigurationService.SPAWN_RADIUS_MAP.put(World.Environment.NETHER, 42.0);
         ConfigurationService.SPAWN_RADIUS_MAP.put(World.Environment.THE_END, 6.5);
-        ConfigurationService.DEFAULT_DEATHBAN_DURATION = TimeUnit.MINUTES.toMillis(120L);
+        ConfigurationService.DEFAULT_DEATHBAN_DURATION = TimeUnit.MINUTES.toMillis(90L);
         TEAMMATE_COLOUR = ChatColor.GREEN;
         ALLY_COLOUR = ChatColor.AQUA;
         ENEMY_COLOUR = ChatColor.YELLOW;
@@ -85,7 +85,7 @@ public final class ConfigurationService
         WARZONE_COLOUR = ChatColor.DARK_RED;
         WILDERNESS_COLOUR = ChatColor.GRAY;
         FOCUS_COLOUR = ChatColor.DARK_AQUA;
-        SCOREBOARD_TITLE = "      §6§lHeavenMC §7[#1]   ";
+        SCOREBOARD_TITLE = "      §6§lHeavenMC §e[IV]   ";
         DTR_MILLIS_BETWEEN_UPDATES = TimeUnit.SECONDS.toMillis(45L);
         DTR_WORDS_BETWEEN_UPDATES = DurationFormatUtils.formatDurationWords(ConfigurationService.DTR_MILLIS_BETWEEN_UPDATES, true, true);
         ConfigurationService.CRATE_BROADCASTS = false;

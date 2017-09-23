@@ -15,6 +15,7 @@ public class PayCommand implements CommandExecutor, TabCompleter
         this.plugin = plugin;
     }
     
+	@SuppressWarnings("deprecation")
 	public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (args.length < 2) {
             sender.sendMessage(ChatColor.RED + "Utilisation: /" + label + " <joueur> <somme>");

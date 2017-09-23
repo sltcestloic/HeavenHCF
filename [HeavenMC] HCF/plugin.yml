@@ -1,5 +1,5 @@
 name: HeavenHCF
-version: 2.0-DEV
+version: 2.0.1
 author: koalaQ_Q
 main: fr.taeron.hcf.HCF
 depends: [HeavenCore]
@@ -76,3 +76,6 @@ commands:
   glowstonemountain:
     aliases: [gmountain, pute]
   kit:
+  setkb:
+  staffmode:
+    aliases: [mod, staff, h]

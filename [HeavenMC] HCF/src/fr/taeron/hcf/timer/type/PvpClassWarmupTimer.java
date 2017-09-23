@@ -39,7 +39,6 @@ public class PvpClassWarmupTimer extends PlayerTimer implements Listener {
         this.plugin = plugin;
 
         new BukkitRunnable() {
-            @SuppressWarnings("deprecation")
 			@Override
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {

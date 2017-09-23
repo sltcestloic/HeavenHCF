@@ -43,7 +43,6 @@ public class DeathListener implements Listener{
         }
     }
     
-    @SuppressWarnings("deprecation")
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerDeath(final PlayerDeathEvent event) {
         final Player player = event.getEntity();

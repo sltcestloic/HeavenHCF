@@ -121,7 +121,7 @@ public class HCF extends JavaPlugin{
     public void onEnable() {
         HCF.plugin = this;
         ProtocolLibHook.hook(this);
-        final Plugin wep = Bukkit.getPluginManager().getPlugin("WorldEdit");
+        final Plugin wep = Bukkit.getPluginManager().getPlugin("HeavenWorldEdit");
         this.worldEdit = ((WorldEditPlugin)wep);
         this.registerConfiguration();
         this.registerCommands();
@@ -222,6 +222,7 @@ public class HCF extends JavaPlugin{
         manager.registerEvents((this.foundDiamondsListener = new FoundDiamondsListener(this)), this);
         manager.registerEvents(new InfinityArrowFixListener(), this);
         manager.registerEvents(new KitListener(this), this);
+        manager.registerEvents(new fr.taeron.hcf.kits.KitListener(this), this);
         manager.registerEvents(new ServerSecurityListener(), this);
         manager.registerEvents(new HungerFixListener(), this);
         manager.registerEvents(new PearlGlitchListener(), this);
@@ -293,6 +294,8 @@ public class HCF extends JavaPlugin{
         this.getCommand("spawner").setExecutor(new SpawnerCommand());
         this.getCommand("glowstonemountain").setExecutor(new GlowstoneMountainCommand());
         this.getCommand("kit").setExecutor(new KitExecutor(this));
+        this.getCommand("setkb").setExecutor(new SetKnockbackCommand());
+        this.getCommand("staffmode").setExecutor(new StaffModeCommand());
         final Map<String, Map<String, Object>> map = (Map<String, Map<String, Object>>)this.getDescription().getCommands();
         for (final Map.Entry<String, Map<String, Object>> entry : map.entrySet()) {
             final PluginCommand command = this.getCommand((String)entry.getKey());
@@ -323,8 +326,8 @@ public class HCF extends JavaPlugin{
         this.protocolManager = ProtocolLibrary.getProtocolManager();
         this.kitManager = new FlatFileKitManager(this);
         this.sqlManager = new HCFSQLManager(this);
-        this.scoreboardManager = new ScoreboardManager(this, "§6§lHeavenHCF §e[Map 4]");
-        this.scoreboardManager.runTaskTimerAsynchronously(this, 0, 20);
+        this.scoreboardManager = new ScoreboardManager(this, ConfigurationService.SCOREBOARD_TITLE);
+        this.scoreboardManager.runTaskTimerAsynchronously(this, 0, 2);
         this.compatManager = new CompatUserManager();
     }
     

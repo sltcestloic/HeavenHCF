@@ -7,7 +7,7 @@ import org.bukkit.*;
 public class StarterKey extends EnderChestKey
 {
     public StarterKey() {
-        super("Starter", 3, new Location(Bukkit.getWorld("world"), -18, 75, -10));
+        super("Starter", 3, new Location(Bukkit.getWorld("world"), -47, 83, 47));
         this.setupRarity(new ItemStack(Material.SPECKLED_MELON, 10), 10);
         this.setupRarity(new ItemStack(Material.SULPHUR, 6), 10);
         this.setupRarity(new ItemStack(Material.BLAZE_ROD, 4), 7);

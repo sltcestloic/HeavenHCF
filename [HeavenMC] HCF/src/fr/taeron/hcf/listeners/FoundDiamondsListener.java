@@ -38,7 +38,6 @@ public class FoundDiamondsListener implements Listener{
         }
     }
     
-    @SuppressWarnings("deprecation")
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onBlockBreak(final BlockBreakEvent event) {
         final Player player = event.getPlayer();

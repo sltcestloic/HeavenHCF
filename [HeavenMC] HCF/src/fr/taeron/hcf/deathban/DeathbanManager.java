@@ -23,6 +23,8 @@ public interface DeathbanManager
     
     Deathban applyDeathBan(Player p0, String p1);
     
+    Deathban applyDeathBan(final UUID player, final String reason);
+    
     Deathban applyDeathBan(UUID p0, Deathban p1);
     
     void reloadDeathbanData();

@@ -58,8 +58,11 @@ public class TrackerListener implements Listener{
 		}
 		Player t = e.getEntity();
 		Player p = e.getEntity().getKiller();
+		if(p == null){
+			return;
+		}
 		FactionUser user = HCF.getPlugin().getUserManager().getUser(p.getUniqueId());
-		if(user.getTrackingUser() != null && user.getTrackingUser() == t){
+		if(user.getTrackingUser() != null && user.getTrackingUser().getName() == t.getName()){
 			int pKills = user.getKills();
 			int tKills = HCF.getPlugin().getUserManager().getUser(t.getUniqueId()).getKills();
 			int dif;

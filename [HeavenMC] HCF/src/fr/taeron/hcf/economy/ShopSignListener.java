@@ -43,9 +43,9 @@ public class ShopSignListener implements Listener
                 ItemStack stack;
                 if (lines[1].equalsIgnoreCase("Crowbar")) {
                     stack = new Crowbar().getItemIfPresent();
+                } else {
+                	stack = new ItemStack(Material.getMaterial(ShopSignListener.ALPHANUMERIC_REMOVER.matcher(lines[1]).replaceAll("").toUpperCase()));
                 }
-                
-                stack = new ItemStack(Material.getMaterial(ShopSignListener.ALPHANUMERIC_REMOVER.matcher(lines[1]).replaceAll("")));
                 
                 final Player player = event.getPlayer();
                 final String[] fakeLines = Arrays.copyOf(sign.getLines(), 4);

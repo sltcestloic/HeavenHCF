@@ -101,7 +101,6 @@ public class EotwHandler
             return System.currentTimeMillis() - this.startStamp;
         }
         
-        @SuppressWarnings("deprecation")
 		public void run() {
             final long elapsedMillis = this.getElapsedMilliseconds();
             final int elapsedSeconds = (int)Math.round(elapsedMillis / 1000.0);

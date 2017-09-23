@@ -32,8 +32,7 @@ public abstract class Faction implements ConfigurationSerializable{
         this.name = name;
     }
     
-    @SuppressWarnings("rawtypes")
-	public Faction(final Map map) {
+    public Faction(@SuppressWarnings("rawtypes") final Map map) {
         this.dtrLossMultiplier = 1.0;
         this.deathbanMultiplier = 1.0;
         this.uniqueID = UUID.fromString((String) map.get("uniqueID"));

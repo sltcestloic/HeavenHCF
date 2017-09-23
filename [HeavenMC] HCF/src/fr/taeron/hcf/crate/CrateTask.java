@@ -12,6 +12,7 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -59,6 +60,7 @@ public class CrateTask {
         inventory.setItem(14, (ItemStack)crateRands.get(randInt(0, crateRands.size() - 1)));
         inventory.setItem(15, (ItemStack)crateRands.get(randInt(0, crateRands.size() - 1)));
         inventory.setItem(16, (ItemStack)crateRands.get(randInt(0, crateRands.size() - 1)));
+       
         player.updateInventory();
         final Location add = location.add(new Vector(0.5, 0.5, 0.5));
         CrateTask.firework(add);
@@ -67,6 +69,9 @@ public class CrateTask {
             long startTime = System.currentTimeMillis();
             
             public void run() {
+            	if(!player.getOpenInventory().getTitle().endsWith(" Crate")){
+            		player.openInventory(inventory);
+            	}
                 final long n = System.currentTimeMillis() - this.startTime;
                 if (this.step == 0) {
                     if (n < 6000L) {
@@ -90,8 +95,28 @@ public class CrateTask {
                     if (n >= 9000L) {
                         ++this.step;
                         CrateTask.firework(add);
+                        Inventory topInventory = player.getOpenInventory().getTopInventory();
+                        World world = player.getWorld();
+                        if(isInventoryFull(player) && topInventory.getItem(12) != null){
+        	            	world.dropItemNaturally(location, topInventory.getItem(12));
+        	            } else if (topInventory.getItem(12) != null) {
+        	            	player.getInventory().addItem(topInventory.getItem(12));
+        	            }
+        	            if(isInventoryFull(player) && topInventory.getItem(13) != null){
+        	            	world.dropItemNaturally(location, topInventory.getItem(13));
+        	            } else if (topInventory.getItem(13) != null) {
+        	            	player.getInventory().addItem(topInventory.getItem(13));
+        	            }
+        	            if(isInventoryFull(player) && topInventory.getItem(14) != null){
+        	            	world.dropItemNaturally(location, topInventory.getItem(14));
+        	            } else if (topInventory.getItem(14) != null) {
+        	            	player.getInventory().addItem(topInventory.getItem(14));
+        	            }
                         player.closeInventory();
+                        CrateListener.open.remove(player.getName());
                         player.playSound(player.getLocation(), Sound.CHEST_CLOSE, 1.0f, 1.0f);
+                        
+                        
                     }
                     else {
                     	CrateTask.glassRainbow(inventory, false);
@@ -169,6 +194,15 @@ public class CrateTask {
         public E next() {
             return this.map.ceilingEntry(this.random.nextDouble() * this.total).getValue();
         }
+    }
+    
+    public static boolean isInventoryFull(Player p){
+    	for(int i = 0; i < 36; i ++){
+    		if(p.getInventory().getItem(i) == null){
+    			return false;
+    		}
+    	}
+    	return true;
     }
     
     private static ArrayList<ItemStack> getCrateRand(Inventory i){
@@ -343,10 +377,11 @@ public class CrateTask {
             return false;
         }
         
-        public void check() {
+        public boolean check() {
             if (this.loops >= this.maxloops) {
                 this.rspeed += 2;
             }
+            return true;
         }
     }
 }

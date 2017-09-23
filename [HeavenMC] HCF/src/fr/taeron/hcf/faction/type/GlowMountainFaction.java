@@ -17,9 +17,9 @@ public class GlowMountainFaction extends ClaimableFaction implements Configurati
         super("GlowstoneMountain");
         final World overworld = Bukkit.getWorld("world_nether");
         final int maxHeight = overworld.getMaxHeight();
-        Location point1 = new Location(Bukkit.getWorld("world_nether"), 119, 0, 201);
-        Location point2 = new Location(Bukkit.getWorld("world_nether"), 222, maxHeight, 87);
-        this.addClaim(new Claim(this, point1, point2), null);
+        Location point1 = new Location(Bukkit.getWorld("world_nether"), -142, 0, 172);
+        Location point2 = new Location(Bukkit.getWorld("world_nether"), 3, maxHeight, 320);
+        this.addClaim(new Claim(this, point1, point2), Bukkit.getConsoleSender());
         this.safezone = false;
     }
     

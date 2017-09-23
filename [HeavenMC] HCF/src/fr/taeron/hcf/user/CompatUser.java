@@ -26,7 +26,7 @@ public class CompatUser extends HeavenUser{
 			return "§e";
 		}
 		if(HCF.getPlugin().getFactionManager().getPlayerFaction(p.getUniqueId()) == HCF.getPlugin().getFactionManager().getPlayerFaction(this.getUUID())){
-			return "§e";
+			return "§a";
 		}
 		
 		return "§e";

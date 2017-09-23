@@ -9,7 +9,6 @@ import org.heavenmc.core.scoreboard.provider.ScoreboardProvider;
 import org.heavenmc.core.util.BukkitUtils;
 
 import fr.taeron.hcf.pvpclass.bard.*;
-import fr.taeron.hcf.pvpclass.type.*;
 import fr.taeron.hcf.pvpclass.archer.*;
 import fr.taeron.hcf.*;
 import fr.taeron.hcf.timer.type.*;
@@ -82,25 +81,25 @@ public class TimerSidebarProvider implements ScoreboardProvider{
         List<String> conquestLines = null;
         final EventFaction eventFaction = eventTimer.getEventFaction();
         FactionUser user = HCF.getPlugin().getUserManager().getUser(player.getUniqueId());
-        lines.add("§eKills: " + "§r" + user.getKills());
-        lines.add("§eMorts: " + "§r" + user.getDeaths());
+        /*lines.add("§eKills: " + "§r" + user.getKills());
+        lines.add("§eMorts: " + "§r" + user.getDeaths());*/
         if (pvpClass != null) {
-            if (pvpClass instanceof BardClass || pvpClass instanceof AssassinClass || pvpClass instanceof ArcherClass) {
-                lines.add(ChatColor.YELLOW.toString() + "Classe" + ChatColor.GOLD + " » " + ChatColor.WHITE + pvpClass.getName());
+            if (pvpClass instanceof BardClass || pvpClass instanceof ArcherClass) {
+                lines.add(ChatColor.YELLOW.toString() + "Classe §6» " + ChatColor.WHITE + pvpClass.getName());
             }
             if (pvpClass instanceof BardClass) {
                 final BardClass bardClass = (BardClass)pvpClass;
-                lines.add(ChatColor.GOLD + " * " + ChatColor.YELLOW + "Energie" + ChatColor.GOLD + ": " + ChatColor.WHITE + handleBardFormat(bardClass.getEnergyMillis(player), true));
+                lines.add(ChatColor.GOLD + " * " + ChatColor.YELLOW + "Energie: " + ChatColor.WHITE + handleBardFormat(bardClass.getEnergyMillis(player), true));
                 final long remaining2 = bardClass.getRemainingBuffDelay(player);
                 if (remaining2 > 0L) {
-                    lines.add(ChatColor.GOLD + " * " + ChatColor.YELLOW + "Cooldown" + ChatColor.GOLD + ": " + ChatColor.WHITE + HCF.getRemaining(remaining2, true));
+                    lines.add(ChatColor.GOLD + " * " + ChatColor.YELLOW + "Cooldown: " + ChatColor.WHITE + HCF.getRemaining(remaining2, true));
                 }
             }
             else if (pvpClass instanceof ArcherClass) {
                 if (ArcherClass.tagged.containsValue(player.getUniqueId())) {
                     for (final UUID uuid : ArcherClass.tagged.keySet()) {
                         if (ArcherClass.tagged.get(uuid).equals(player.getUniqueId()) && Bukkit.getPlayer(uuid) != null) {
-                            lines.add(ChatColor.GOLD + " * " + ChatColor.YELLOW.toString()+ "Tag" + ChatColor.GOLD + ": "+ ChatColor.RED + Bukkit.getPlayer(uuid).getName());
+                            lines.add(ChatColor.GOLD + " * " + ChatColor.YELLOW.toString()+ "Tag: "+ ChatColor.RED + Bukkit.getPlayer(uuid).getName());
                         }
                     }
                 }
@@ -129,6 +128,9 @@ public class TimerSidebarProvider implements ScoreboardProvider{
 
             }	
         }
+       
+       	lines.add("§eRegion §6» " + HCF.getPlugin().getFactionManager().getFactionAt(player.getLocation()).getDisplayName(player));
+       
         final Collection<Timer> timers = this.plugin.getTimerManager().getTimers();
         for (final Timer timer : timers) {
             if (timer instanceof PlayerTimer && !(timer instanceof NotchAppleTimer)) {
@@ -141,7 +143,7 @@ public class TimerSidebarProvider implements ScoreboardProvider{
                 if (timerName.length() > 14) {
                     timerName = timerName.substring(0+ timerName.length());
                 }
-                lines.add(playerTimer.getScoreboardPrefix()+ timerName + ChatColor.GOLD+ " » " + ChatColor.WHITE + HCF.getRemaining(remaining2, true));
+                lines.add(timer.getScoreboardPrefix() + timerName + " §6» " + ChatColor.WHITE + HCF.getRemaining(remaining2, true));
             }
             if (timer instanceof GlobalTimer) {
                 final GlobalTimer playerTimer2 = (GlobalTimer)timer;
@@ -153,16 +155,16 @@ public class TimerSidebarProvider implements ScoreboardProvider{
                 if (timerName.length() > 14) {
                     timerName = timerName.substring(0+ timerName.length());
                 }
-                lines.add(playerTimer2.getScoreboardPrefix()+ timerName + ChatColor.GRAY+ " » " + ChatColor.RED + HCF.getRemaining(remaining2, true));
+                lines.add(timer.getScoreboardPrefix() + timerName + " §6» " + ChatColor.RED + HCF.getRemaining(remaining2, true));
             }
         }
         if (eotwRunnable != null) {
             long remaining3 = eotwRunnable.getTimeUntilStarting();
             if (remaining3 > 0L) {
-                lines.add(ChatColor.DARK_RED.toString() + ChatColor.BOLD+ "EOTW" + ChatColor.RED + " (Début"+ ") " + ChatColor.GRAY + " » " + ChatColor.RED + HCF.getRemaining(remaining3, true));
+                lines.add(ChatColor.DARK_RED.toString() + ChatColor.BOLD+ "EOTW" + ChatColor.RED + " (Début"+ ") " + ChatColor.GOLD + " » " + ChatColor.RED + HCF.getRemaining(remaining3, true));
             }
             else if ((remaining3 = eotwRunnable.getTimeUntilCappable()) > 0L) {
-                lines.add(ChatColor.DARK_RED.toString() + ChatColor.BOLD+ "EOTW" + ChatColor.RED + " (Capture"+ ") " + ChatColor.GRAY + " » " + ChatColor.RED + HCF.getRemaining(remaining3, true));
+                lines.add(ChatColor.DARK_RED.toString() + ChatColor.BOLD+ "EOTW" + ChatColor.RED + " (FFA"+ ") " + ChatColor.GOLD + " » " + ChatColor.RED + HCF.getRemaining(remaining3, true));
             }
         }
         if (eventFaction instanceof ConquestFaction) {
@@ -178,7 +180,7 @@ public class TimerSidebarProvider implements ScoreboardProvider{
                 if (factionName.length() > 14) {
                     factionName = factionName.substring(0+ 14);
                 }
-                lines.add("  " + ChatColor.RED+ factionName+ ChatColor.GRAY + " » " + ChatColor.WHITE + entry.getValue());
+                lines.add("  " + ChatColor.RED+ factionName+ ChatColor.GOLD + " » " + ChatColor.WHITE + entry.getValue());
                 if (++count == 3) {
                     break;
                 }
@@ -186,14 +188,13 @@ public class TimerSidebarProvider implements ScoreboardProvider{
         } 
         
         if(player.hasPermission("heaven.staff") && StaffMode.isInStaffMode(player)){
-        	lines.add(ChatColor.GOLD.toString()+ "Vanish" + ChatColor.GRAY + " » "+ (Core.getPlugin().getUserManager().getPlayer(player).isVanished() ? (ChatColor.GREEN + "Activé") : (ChatColor.RED + "Désactivé")));
+        	lines.add(ChatColor.GOLD.toString()+ "Vanish" + ChatColor.GOLD + " » "+ (Core.getPlugin().getUserManager().getPlayer(player).isVanished() ? (ChatColor.GREEN + "Activé") : (ChatColor.RED + "Désactivé")));
         }
         if (conquestLines != null && !conquestLines.isEmpty()) {
             conquestLines.addAll(lines);
             lines = conquestLines;
         }
-        lines.add("§0" +  ChatColor.GRAY+ TimerSidebarProvider.STRAIGHT_LINE+ TimerSidebarProvider.STRAIGHT_LINE);
-        lines.add("§eRegion: " + HCF.getPlugin().getFactionManager().getFactionAt(player.getLocation()).getDisplayName(player));
+        //lines.add("§0" +  ChatColor.GRAY+ TimerSidebarProvider.STRAIGHT_LINE+ TimerSidebarProvider.STRAIGHT_LINE);
         if (!lines.isEmpty()) {
         }
         return lines;

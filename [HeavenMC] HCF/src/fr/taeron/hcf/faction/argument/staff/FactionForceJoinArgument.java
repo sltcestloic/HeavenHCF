@@ -57,7 +57,6 @@ public class FactionForceJoinArgument extends CommandArgument{
         return true;
     }
     
-    @SuppressWarnings("deprecation")
 	public List<String> onTabComplete(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (args.length != 2 || !(sender instanceof Player)) {
             return Collections.emptyList();

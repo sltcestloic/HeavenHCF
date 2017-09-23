@@ -103,11 +103,11 @@ public class FactionListener implements Listener
             player.setFireTicks(0);
             player.setSaturation(4.0f);
         }
-        Player player = event.getPlayer();
+        /*Player player = event.getPlayer();
         if (this.getLastLandChangedMeta(player) <= 0L) {
             Faction fromFaction = event.getFromFaction();
             player.sendMessage(fromFaction.getDisplayName((CommandSender)player) + ChatColor.YELLOW + " (" + (fromFaction.isDeathban() ? (ChatColor.RED + "Deathban") : (ChatColor.GREEN + "Non-Deathban")) + ChatColor.YELLOW + ')' + ChatColor.GRAY + " -> " + toFaction.getDisplayName((CommandSender)player) + ChatColor.YELLOW + " (" + (toFaction.isDeathban() ? (ChatColor.RED + "Deathban") : (ChatColor.GREEN + "Non-Deathban")) + ChatColor.YELLOW + ')');
-        }
+        }*/
     }
     
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)

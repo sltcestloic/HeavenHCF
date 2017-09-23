@@ -31,7 +31,7 @@ public class PortalListener implements Listener
     
     @EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
     public void onEntityPortal(final EntityPortalEvent event) {
-        if (event.getEntity() instanceof EnderDragon) {
+        if (event.getEntity() instanceof EnderDragon || event.getEntity() instanceof Minecart || event.getEntity() instanceof Horse) {
             event.setCancelled(true);
         }
     }
