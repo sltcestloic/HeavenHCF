@@ -75,7 +75,7 @@ public class ProtectionListener implements Listener{
                     result = true;
                 }
             }
-            if(factionAt.getName().equalsIgnoreCase("Warzone")){
+            if(factionAt.getName().equalsIgnoreCase("Warzone") && location.getBlock().getType() != Material.GLOWSTONE){
             	result = false;
             	if (denyMessage != null && player != null && HCF.getPlugin().getFactionManager().getPlayerFaction(player) == null){
             		if(!(factionAt instanceof PlayerFaction)){

@@ -26,7 +26,7 @@ public class TabListener implements Listener{
 		tab.getByPosition(2, 5).text("§fP1, T1").send();
 		tab.getByPosition(0, 6).text("  §eMorts: §f" + HCF.getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId()).getDeaths()).send();
 		tab.getByPosition(2, 7).text("§eSOTW:").send();
-		tab.getByPosition(0, 8).text("§eConnectés: §f" + Bukkit.getOnlinePlayers().size()).send();
+		tab.getByPosition(0, 8).text("§eConnectés: §f" + Bukkit.getOnlinePlayersList().size()).send();
 		tab.getByPosition(2, 8).text("§f23/09/2017").send();
 		tab.getByPosition(0, 10).text("§eMinerais:").send();
 		tab.getByPosition(2, 10).text("§eFaction:").send();

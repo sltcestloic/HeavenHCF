@@ -28,7 +28,7 @@ public final class ConfigurationService
     public static final Map<PotionType, Integer> POTION_LIMITS;
     public static final Map<World.Environment, Integer> BORDER_SIZES;
     public static final Map<World.Environment, Double> SPAWN_RADIUS_MAP;
-    public static final int FACTION_PLAYER_LIMIT = 12;
+    public static final int FACTION_PLAYER_LIMIT = 8;
     public static final ChatColor TEAMMATE_COLOUR;
     public static final ChatColor ALLY_COLOUR;
     public static final ChatColor ENEMY_COLOUR;

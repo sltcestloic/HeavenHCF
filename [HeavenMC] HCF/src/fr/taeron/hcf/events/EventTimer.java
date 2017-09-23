@@ -74,6 +74,9 @@ public class EventTimer extends GlobalTimer implements Listener
     }
     
     public String getScoreboardPrefix() {
+    	if(this.getName().contains("Citadel")){
+            return ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD;
+    	}
         return ChatColor.BLUE.toString() + ChatColor.BOLD;
     }
     

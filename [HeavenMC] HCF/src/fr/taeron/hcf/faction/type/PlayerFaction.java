@@ -528,7 +528,7 @@ public class PlayerFaction extends ClaimableFaction implements Raidable{
 	public void broadcast(final String[] messages, final UUID... ignore) {
         Preconditions.checkNotNull(messages, "Messages cannot be null");
         Preconditions.checkArgument(messages.length > 0, "Message array cannot be empty");
-        final Collection<Player> players = Bukkit.getOnlinePlayers();
+        final Collection<Player> players = this.getOnlinePlayers();
         final Collection<UUID> ignores = ((ignore.length == 0) ? Collections.emptySet() : Sets.newHashSet(ignore));
         for (final Player player : players) {
         	if(player != null && messages != null){

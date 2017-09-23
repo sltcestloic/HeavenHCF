@@ -5,7 +5,9 @@ import fr.taeron.hcf.*;
 import java.util.concurrent.*;
 import java.util.*;
 import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.plugin.*;
 import org.bukkit.entity.*;
 import fr.taeron.hcf.user.*;
@@ -31,10 +33,21 @@ public class DeathbanListener implements Listener{
         this.plugin = plugin;
     }
     
+    @EventHandler
+    public void pd(PlayerLoginEvent e){
+    	CraftPlayer cp = (CraftPlayer) e.getPlayer();
+    	if(cp.getHandle().playerConnection.networkManager.getVersion() > 7){
+    		e.disallow(Result.KICK_BANNED, "Merci de te connecter en 1.7");
+    	}
+    }
+    
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onPlayerLogin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         final FactionUser user = this.plugin.getUserManager().getUser(player.getUniqueId());
+        if(user == null){
+        	return;
+        }
         final Deathban deathban = user.getDeathban();
         if (deathban == null || !deathban.isActive()) {
             return;

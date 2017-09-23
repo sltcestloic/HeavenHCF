@@ -66,7 +66,7 @@ public class TrackerSearchArgument extends CommandArgument{
 			return false;
 		}
 		ArrayList<Player> rdn = new ArrayList<Player>();
-		Bukkit.getOnlinePlayers().stream().filter(randy -> (HCF.getPlugin().getFactionManager().getFactionAt(randy.getLocation()).isDeathban()
+		Bukkit.getOnlinePlayersList().stream().filter(randy -> (HCF.getPlugin().getFactionManager().getFactionAt(randy.getLocation()).isDeathban()
 					&& HCF.getPlugin().getFactionManager().getPlayerFaction(randy) != null
 					&& HCF.getPlugin().getFactionManager().getPlayerFaction(randy) != HCF.getPlugin().getFactionManager().getPlayerFaction(p)
 					&& !HCF.getPlugin().getFactionManager().getPlayerFaction(p).getAlliedFactions().contains(HCF.getPlugin().getFactionManager().getPlayerFaction(randy))

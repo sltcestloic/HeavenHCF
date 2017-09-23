@@ -21,7 +21,7 @@ public class FactionListArgument extends CommandArgument{
     public FactionListArgument(final HCF plugin) {
         super("list", "See a list of all factions.");
         this.plugin = plugin;
-        this.aliases = new String[] { "l" };
+        this.aliases = new String[] { "l", "top" };
     }
     
 	private static net.md_5.bungee.api.ChatColor fromBukkit(final ChatColor chatColor) {

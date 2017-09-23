@@ -212,7 +212,9 @@ public class Kit implements ConfigurationSerializable{
         player.getInventory().setChestplate(new ItemStack(Material.AIR));
         player.getInventory().setLeggings(new ItemStack(Material.AIR));
         player.getInventory().setBoots(new ItemStack(Material.AIR));*/
-        player.addPotionEffects((Collection)this.effects);
+        if(this.effects != null){
+        	player.addPotionEffects((Collection)this.effects);
+        }
         final ItemStack cursor = player.getItemOnCursor();
         final Location location = player.getLocation();
         final World world = player.getWorld();

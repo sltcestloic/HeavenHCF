@@ -23,18 +23,18 @@ public abstract class EventFaction extends ClaimableFaction
     
     @Override
     public String getDisplayName(final Faction faction) {
-        if (this.getEventType() == EventType.KOTH && !this.getEventType().getDisplayName().contains("Citadel")) {
+        if (this.getEventType() == EventType.KOTH && !this.getName().contains("Citadel")) {
             return ChatColor.GOLD.toString() + this.getEventType().getDisplayName() + ' ' + this.getName();
         }
-        return ChatColor.DARK_PURPLE + ChatColor.BOLD.toString() + (this.getEventType().getDisplayName().contains("Citadel") ? "Citadel" : this.getEventType().getDisplayName());
+        return ChatColor.DARK_PURPLE + ChatColor.BOLD.toString() + "Citadel";
     }
     
     @Override
     public String getDisplayName(final CommandSender sender) {
-        if (this.getEventType() == EventType.KOTH && !this.getEventType().getDisplayName().contains("Citadel")) {
+        if (this.getEventType() == EventType.KOTH && !this.getName().contains("Citadel")) {
             return "§9§l" + this.getEventType().getDisplayName() + ' ' + this.getName();
         }
-        return ChatColor.DARK_PURPLE + ChatColor.BOLD.toString() + (this.getEventType().getDisplayName().contains("Citadel") ? "Citadel" : this.getEventType().getDisplayName());
+        return ChatColor.DARK_PURPLE + ChatColor.BOLD.toString() + "Citadel";
     }
     
     public void setClaim(Cuboid cuboid, final CommandSender sender) {

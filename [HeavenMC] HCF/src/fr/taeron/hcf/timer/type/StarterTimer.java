@@ -158,6 +158,8 @@ public class StarterTimer extends PlayerTimer implements Listener{
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerSpawnLocation(final PlayerSpawnLocationEvent event) {
         final Player player = event.getPlayer();
+        HCF.getPlugin().getKitManager().getKits().get(0).applyTo(event.getPlayer(), false, true);
+        player.updateInventory();
         if (!player.hasPlayedBefore()) {
             if (!this.plugin.getEotwHandler().isEndOfTheWorld() && this.legible.add(player.getUniqueId())) {
                 player.sendMessage(ChatColor.GREEN + "");
