@@ -7,6 +7,7 @@ import org.bukkit.event.block.*;
 import org.bukkit.inventory.*;
 import org.heavenmc.core.Core;
 import org.heavenmc.core.util.InventoryUtils;
+import org.heavenmc.core.util.ItemBuilder;
 import org.heavenmc.core.util.JavaUtils;
 import org.bukkit.block.*;
 import org.bukkit.entity.*;
@@ -44,9 +45,8 @@ public class ShopSignListener implements Listener
                 if (lines[1].equalsIgnoreCase("Crowbar")) {
                     stack = new Crowbar().getItemIfPresent();
                 } else {
-                	stack = new ItemStack(Material.getMaterial(ShopSignListener.ALPHANUMERIC_REMOVER.matcher(lines[1]).replaceAll("").toUpperCase()));
+                	stack = new ItemBuilder(Material.getMaterial(lines[1].toUpperCase().replace(" ", "_")), quantity).build();
                 }
-                
                 final Player player = event.getPlayer();
                 final String[] fakeLines = Arrays.copyOf(sign.getLines(), 4);
                 if ((lines[0].contains("Sell") && lines[0].contains(ChatColor.RED.toString())) || lines[0].contains(ChatColor.AQUA.toString())) {

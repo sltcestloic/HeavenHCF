@@ -52,7 +52,6 @@ public class PvpProtectionTimer extends PlayerTimer implements Listener
         }
         if (this.getRemaining(player) <= 0L) {
             this.plugin.getVisualiseHandler().clearVisualBlocks(player, VisualType.CLAIM_BORDER, null);
-            player.sendMessage(ChatColor.RED.toString() + "Ton PvPTimer a expiré.");
         }
     }
     

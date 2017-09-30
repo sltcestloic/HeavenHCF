@@ -35,8 +35,7 @@ public class FactionHelpArgument extends CommandArgument{
         sender.sendMessage("§dInformation");
         sender.sendMessage(" §e/f show <faction> §6» §fMontrer les informations d'une faction");
         sender.sendMessage(" §e/f map §6» §fAfficher les pilliers de délimitation des claims");
-        sender.sendMessage(" §e/f list §6» §fVoir la liste des factions possédant le plus de joueurs connéctés");
-        sender.sendMessage(" §e/f top §6» §fVoir la liste des factions possédant le plus de kills");
+        sender.sendMessage(" §e/f top §6» §fVoir la liste des meilleures factions");
         sender.sendMessage("§dCapitaine");
         sender.sendMessage(" §e/f kick <joueur> §6» §fKick un joueur de la faction");
         sender.sendMessage(" §e/f withdraw <joueur> §6» §fKick un joueur de la faction");

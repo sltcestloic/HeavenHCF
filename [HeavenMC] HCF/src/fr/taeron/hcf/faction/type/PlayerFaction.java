@@ -382,7 +382,7 @@ public class PlayerFaction extends ClaimableFaction implements Raidable{
             deathsUntilRaidable = Math.min(deathsUntilRaidable, this.getMaximumDeathsUntilRaidable());
         }
         if (deathsUntilRaidable - this.deathsUntilRaidable != 0.0) {
-            final FactionDtrChangeEvent event = new FactionDtrChangeEvent(FactionDtrChangeEvent.DtrUpdateCause.REGENERATION, this, this.deathsUntilRaidable, deathsUntilRaidable);
+            final FactionDtrChangeEvent event = new FactionDtrChangeEvent(this, FactionDtrChangeEvent.DtrUpdateCause.REGENERATION, this, this.deathsUntilRaidable, deathsUntilRaidable);
             Bukkit.getPluginManager().callEvent((Event)event);
             if (!event.isCancelled()) {
                 deathsUntilRaidable = event.getNewDtr();

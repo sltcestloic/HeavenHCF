@@ -2,6 +2,7 @@ package fr.taeron.hcf.faction.event;
 
 import org.bukkit.event.*;
 import fr.taeron.hcf.faction.struct.*;
+import fr.taeron.hcf.faction.type.PlayerFaction;
 
 public class FactionDtrChangeEvent extends Event implements Cancellable
 {
@@ -11,8 +12,9 @@ public class FactionDtrChangeEvent extends Event implements Cancellable
     private final double originalDtr;
     private boolean cancelled;
     private double newDtr;
+    private PlayerFaction faction;
     
-    public FactionDtrChangeEvent(final DtrUpdateCause cause, final Raidable raidable, final double originalDtr, final double newDtr) {
+    public FactionDtrChangeEvent(PlayerFaction faction, final DtrUpdateCause cause, final Raidable raidable, final double originalDtr, final double newDtr) {
         this.cause = cause;
         this.raidable = raidable;
         this.originalDtr = originalDtr;
@@ -55,7 +57,15 @@ public class FactionDtrChangeEvent extends Event implements Cancellable
         return FactionDtrChangeEvent.handlers;
     }
     
-    static {
+    public PlayerFaction getFaction() {
+		return faction;
+	}
+
+	public void setFaction(PlayerFaction faction) {
+		this.faction = faction;
+	}
+
+	static {
         handlers = new HandlerList();
     }
     

@@ -21,6 +21,15 @@ public class BorderListener implements Listener
         if (!isWithinBorder(event.getLocation())) {
             event.setCancelled(true);
         }
+        
+        if(event.getEntity() instanceof Monster){
+        	Location loc = event.getLocation();
+        	if(loc.getWorld().getName().equalsIgnoreCase("world_the_end")) return;
+        	if(loc.getX() < 300 && loc.getZ() < 300 && loc.getX() > -300 && loc.getZ() > -300){
+        		event.setCancelled(true);
+        	}
+        }
+        
     }
     
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)

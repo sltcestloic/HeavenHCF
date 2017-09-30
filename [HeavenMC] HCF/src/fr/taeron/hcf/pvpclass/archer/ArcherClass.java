@@ -70,7 +70,7 @@ public class ArcherClass extends PvpClass implements Listener
                 return;
             }
             Cooldowns.addCooldown("Archer_item_cooldown", p, 25);
-            p.sendMessage(ChatColor.GREEN.toString() + "Speed 4 activée");
+            p.sendMessage(ChatColor.GREEN.toString() + "Speed 5 activée");
             if (p.getItemInHand().getAmount() == 1) {
                 p.getInventory().remove(p.getItemInHand());
             }

@@ -32,7 +32,7 @@ public class TabListener implements Listener{
 		tab.getByPosition(2, 10).text("§eFaction:").send();
 		FactionUser user = HCF.getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId());
 		tab.getByPosition(0, 11).text("§bDiamonds: §f" + user.diamonds).send();
-		tab.getByPosition(0, 12).text("§eEmeralds: §f" + user.emerald).send();
+		tab.getByPosition(0, 12).text("§aEmeralds: §f" + user.emerald).send();
 		tab.getByPosition(0, 13).text("§6Golds: §f" + user.gold).send();
 		tab.getByPosition(0, 14).text("§7Irons: §f" + user.iron).send();
 		tab.getByPosition(0, 15).text("§cRedstone: §f" + user.redstone).send();

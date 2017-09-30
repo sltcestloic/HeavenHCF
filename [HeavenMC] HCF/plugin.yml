@@ -71,7 +71,6 @@ commands:
     aliases: [ore, stats, stat]
   tracker:
   flip:
-  kb:
   spawner:
   glowstonemountain:
     aliases: [gmountain, pute]

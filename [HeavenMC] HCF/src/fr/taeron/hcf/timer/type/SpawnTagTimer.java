@@ -38,10 +38,9 @@ public class SpawnTagTimer extends PlayerTimer implements Listener{
     @EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
     public void onKitApply(KitApplyEvent event) {
         final Player player = event.getPlayer();
-        final long remaining;
-        if (!event.isForce() && (remaining = this.getRemaining(player)) > 0L) {
+        if (!event.isForce() && this.getRemaining(player) > 0L) {
             event.setCancelled(true);
-            player.sendMessage(ChatColor.RED + "Tu ne peux pas prendre de kit tant que ton " + this.getDisplayName() + ChatColor.RED + " timer est actif [" + ChatColor.BOLD + HCF.getRemaining(remaining, true, false) + ChatColor.RED + " restant]");
+            player.sendMessage(ChatColor.RED + "Tu ne peux pas prendre de kit tant que ton Combat timer est actif.");
         }
     }
     
@@ -72,7 +71,7 @@ public class SpawnTagTimer extends PlayerTimer implements Listener{
             final long remaining = this.getRemaining(player);
             if (remaining > 0L) {
                 event.setCancelled(true);
-                player.sendMessage(ChatColor.RED + "Tu ne peux pas rejoindre de faction tant que ton " + this.getDisplayName() + ChatColor.RED + " timer est actif [" + ChatColor.BOLD + HCF.getRemaining(this.getRemaining(player), true, false) + ChatColor.RED + " restant]");
+                player.sendMessage(ChatColor.RED + "Tu ne peux pas rejoindre de faction tant que ton Combat timer est actif.");
             }
         }
     }
@@ -84,7 +83,7 @@ public class SpawnTagTimer extends PlayerTimer implements Listener{
             final Player player = (Player)optional.get();
             if (this.getRemaining(player) > 0L) {
                 event.setCancelled(true);
-                player.sendMessage(ChatColor.RED + "Tu ne peux pas quitter ta faction tant que ton " + this.getDisplayName() + ChatColor.RED + " timer est actif [" + ChatColor.BOLD + HCF.getRemaining(this.getRemaining(player), true, false) + ChatColor.RED + " restant]");
+                player.sendMessage(ChatColor.RED + "Tu ne peux pas quitter ta faction tant que ton Combat timer est actif");
             }
         }
     }
@@ -97,7 +96,7 @@ public class SpawnTagTimer extends PlayerTimer implements Listener{
         final Player player = event.getPlayer();
         if (!event.getFromFaction().isSafezone() && event.getToFaction().isSafezone() && this.getRemaining(player) > 0L) {
             event.setCancelled(true);
-            player.sendMessage(ChatColor.RED + "Tu ne peux pas entrer dans le territoire de " + event.getToFaction().getDisplayName((CommandSender)player) + ChatColor.RED + " tant que ton " + this.getDisplayName() + ChatColor.RED + " timer est actif [" + ChatColor.BOLD + HCF.getRemaining(this.getRemaining(player), true, false) + ChatColor.RED + " restant]");
+            player.sendMessage(ChatColor.RED + "Tu ne peux pas entrer dans le territoire de " + event.getToFaction().getDisplayName((CommandSender)player) + ChatColor.RED + " tant que ton Combat timer est actif.");
         }
     }
     
@@ -124,7 +123,7 @@ public class SpawnTagTimer extends PlayerTimer implements Listener{
             final com.google.common.base.Optional<Player> optional = event.getPlayer();
             if (optional.isPresent()) {
                 final Player player = (Player)optional.get();
-                player.sendMessage(ChatColor.YELLOW + "Tu es désormais sous " + "spawn tag" + ChatColor.YELLOW + " pendant " + ChatColor.RED + DurationFormatUtils.formatDurationWords(event.getDuration(), true, true) + ChatColor.YELLOW + '.');
+                player.sendMessage(ChatColor.YELLOW + "Tu es désormais sous " + "Combat timer" + ChatColor.YELLOW + " pendant " + ChatColor.RED + DurationFormatUtils.formatDurationWords(event.getDuration(), true, true) + ChatColor.YELLOW + '.');
             }
         }
     }

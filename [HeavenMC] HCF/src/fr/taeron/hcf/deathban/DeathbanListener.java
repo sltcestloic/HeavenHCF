@@ -5,7 +5,6 @@ import fr.taeron.hcf.*;
 import java.util.concurrent.*;
 import java.util.*;
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.plugin.*;
@@ -16,6 +15,7 @@ import net.minecraft.util.org.apache.commons.lang3.time.DurationFormatUtils;
 import org.bukkit.event.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.scheduler.*;
+
 public class DeathbanListener implements Listener{
 	
     private static final long LIFE_USE_DELAY_MILLIS;
@@ -32,17 +32,9 @@ public class DeathbanListener implements Listener{
     public DeathbanListener(final HCF plugin) {
         this.plugin = plugin;
     }
-    
-    @EventHandler
-    public void pd(PlayerLoginEvent e){
-    	CraftPlayer cp = (CraftPlayer) e.getPlayer();
-    	if(cp.getHandle().playerConnection.networkManager.getVersion() > 7){
-    		e.disallow(Result.KICK_BANNED, "Merci de te connecter en 1.7");
-    	}
-    }
-    
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
-    public void onPlayerLogin(final PlayerJoinEvent event) {
+    public void onPlayerLogin(final PlayerLoginEvent event) {
         final Player player = event.getPlayer();
         final FactionUser user = this.plugin.getUserManager().getUser(player.getUniqueId());
         if(user == null){
@@ -57,7 +49,7 @@ public class DeathbanListener implements Listener{
             return;
         }
         if (this.plugin.getEotwHandler().isEndOfTheWorld()) {
-            event.getPlayer().kickPlayer(ChatColor.RED + "Tu es deathban jusqu'a la fin de la map car tu es mort pendant l'EOTW.\nReviens pour le prochain SOTW !");
+            event.disallow(Result.KICK_WHITELIST, ChatColor.RED + "Tu es deathban jusqu'a la fin de la map car tu es mort pendant l'EOTW.\nReviens pour le prochain SOTW !");
         }
         else {
             final UUID uuid = player.getUniqueId();
@@ -76,11 +68,11 @@ public class DeathbanListener implements Listener{
                 }
                 else {
                     this.lastAttemptedJoin.put(uuid, millis + DeathbanListener.LIFE_USE_DELAY_MILLIS);
-                    event.getPlayer().kickPlayer(String.valueOf(prefix) + ChatColor.GOLD + "\n\n" + "Tu peux utiliser une vie en te reconnectant dans les " + ChatColor.YELLOW + DeathbanListener.LIFE_USE_DELAY_WORDS + ChatColor.GOLD + " à venir.");
+                    event.disallow(Result.KICK_WHITELIST, String.valueOf(prefix) + ChatColor.GOLD + "\n\n" + "Tu peux utiliser une vie en te reconnectant dans les " + ChatColor.YELLOW + DeathbanListener.LIFE_USE_DELAY_WORDS + ChatColor.GOLD + " à venir.");
                 }
                 return;
             }
-            event.getPlayer().kickPlayer(ChatColor.RED + "Tu est encore deathban pendant " + formattedDuration + ": " + ChatColor.YELLOW + deathban.getReason() + ChatColor.RED + '.' + "\nTu peux acheter une vie sur " + ConfigurationService.DONATE_URL + " pour bypass le deathban.");
+            event.disallow(Result.KICK_WHITELIST, ChatColor.RED + "Tu est encore deathban pendant " + formattedDuration + ": " + ChatColor.YELLOW + deathban.getReason() + ChatColor.RED + '.' + "\nTu peux acheter une vie sur " + ConfigurationService.DONATE_URL + " pour bypass le deathban.");
         }
     }
     
@@ -99,23 +91,20 @@ public class DeathbanListener implements Listener{
                     player.kickPlayer(ChatColor.RED + "Tu es deathban pendant " + durationString + ": " + ChatColor.YELLOW + deathban.getReason());
                 }
             }
-        }.runTaskLater((Plugin)this.plugin, 1L);
+        }.runTaskLater((Plugin)this.plugin, 19L);
     }
     
     //KITMAP
     
-	/*@EventHandler
-    public void disableDTRChange(PlayerDeathEvent e){
-    	Player p = e.getEntity();
-    	PlayerFaction f = HCF.getPlugin().getFactionManager().getPlayerFaction(p.getUniqueId());
-    	if(f != null){
-    		f.setDeathsUntilRaidable(f.getMaximumDeathsUntilRaidable());
-    	}
-    }*/
+	//@EventHandler
+    //public void disableDTRChange(FactionDtrChangeEvent e){
+	//	e.setCancelled(true);
+	//	return;
+    //}
     
     private static class LoginMessageRunnable extends BukkitRunnable
     {
-        private final Player player;
+        private final Player player; 
         private final String message;
         
         public LoginMessageRunnable(final Player player, final String message) {

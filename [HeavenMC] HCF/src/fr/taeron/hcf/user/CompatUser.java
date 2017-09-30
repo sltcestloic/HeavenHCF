@@ -1,7 +1,11 @@
 package fr.taeron.hcf.user;
 
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.heavenmc.core.Core;
 import org.heavenmc.core.user.HeavenUser;
@@ -30,6 +34,19 @@ public class CompatUser extends HeavenUser{
 		}
 		
 		return "§e";
+	}
+
+	@Override
+	public Player getRandomPlayer() {
+		ArrayList<Player> players = new ArrayList<Player>();
+		for (Player z : Bukkit.getOnlinePlayers()){
+			if(z != this.getPlayer() && z.getGameMode() != GameMode.CREATIVE && !z.getAllowFlight()){
+				players.add(z);				
+			}
+			
+		}
+		Player randomPlayer = players.get(new Random().nextInt(players.size()));
+		return randomPlayer;
 	}
 
 }

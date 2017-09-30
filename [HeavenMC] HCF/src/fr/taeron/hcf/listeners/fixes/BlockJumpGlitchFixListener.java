@@ -11,7 +11,7 @@ import org.bukkit.event.*;
 public class BlockJumpGlitchFixListener implements Listener
 {
     @EventHandler(ignoreCancelled = false, priority = EventPriority.MONITOR)
-    public void onBlockBreak(final BlockPlaceEvent event) {
+    public void onBlockBreak(BlockPlaceEvent event) {
         if (event.isCancelled()) {
             final Player player = event.getPlayer();
             if (player.getGameMode() == GameMode.CREATIVE || player.getAllowFlight()) {
@@ -19,10 +19,13 @@ public class BlockJumpGlitchFixListener implements Listener
             }
             final Block block = event.getBlockPlaced();
             if (block.getType().isSolid() && !(block.getState() instanceof Sign)) {
-                final int playerY = player.getLocation().getBlockY();
-                final int blockY = block.getLocation().getBlockY();
-                if (playerY > blockY /*&& blockX == playerX && blockZ == playerZ*/ && player.getLocation().getBlock().getRelative(0, -1, 0).getType().equals(Material.AIR)) {
-                    //final Vector vector = player.getVelocity();
+            	int playerY = player.getLocation().getBlockY();
+            	int blockY = block.getLocation().getBlockY();
+            	int playerX = player.getLocation().getBlockX();
+                int blockX = block.getLocation().getBlockX();
+                int playerZ = player.getLocation().getBlockZ();
+                int blockZ = block.getLocation().getBlockZ();
+                if (playerY > blockY && blockX == playerX && blockZ == playerZ && player.getLocation().getBlock().getRelative(0, -1, 0).getType().equals(Material.AIR)) {
                     player.teleport(player.getLocation().add(0, -1, 0));
                 }
             }

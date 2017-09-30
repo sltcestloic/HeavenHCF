@@ -194,8 +194,7 @@ public class HCF extends JavaPlugin {
     manager.registerEvents(new BoatGlitchFixListener(), this);
     manager.registerEvents(new BookDeenchantListener(), this);
     manager.registerEvents(new BorderListener(), this);
-    manager.registerEvents(new BottledExpListener(), this);
-    manager.registerEvents(new ChatListener(this), this);
+    //manager.registerEvents(new ChatListener(this), this);
     manager.registerEvents(new ClaimWandListener(this), this);
     manager.registerEvents(new CombatLogListener(this), this);
     manager.registerEvents(new CoreListener(this), this);
@@ -237,9 +236,9 @@ public class HCF extends JavaPlugin {
     manager.registerEvents(new TrackerListener(), this);
     manager.registerEvents(new FlipListener(), this);
     manager.registerEvents(new LivesListener(), this);
-    manager.registerEvents(new KnockbackListener(), this);
     manager.registerEvents(new MobTargetListener(), this);
     manager.registerEvents(new TabListener(), this);
+    manager.registerEvents(new fr.taeron.hcf.kits.KitListener(this), this);
   }
 
   public void runAutoSave() {

@@ -59,7 +59,7 @@ public class FoundDiamondsListener implements Listener{
                 }
             }
             for (final Player on : Bukkit.getOnlinePlayers()) {
-                final String message = this.plugin.getFactionManager().getPlayerFaction(player.getUniqueId()).getRelation((CommandSender)on).toChatColour() + player.getName() + ChatColor.GRAY + " a trouvé " + ChatColor.AQUA + count + (count > 1 ? "diamants" : "diamant");
+                final String message = this.plugin.getFactionManager().getPlayerFaction(player.getUniqueId()).getRelation((CommandSender)on).toChatColour() + player.getName() + ChatColor.GRAY + " a trouvé " + ChatColor.AQUA + count + (count > 1 ? " diamants" : " diamant");
                 on.sendMessage(message);
             }
         }

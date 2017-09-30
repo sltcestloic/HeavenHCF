@@ -20,7 +20,6 @@ import fr.taeron.hcf.timer.*;
 import org.spigotmc.event.player.*;
 import fr.taeron.hcf.faction.event.*;
 import fr.taeron.hcf.faction.type.*;
-import org.bukkit.command.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.entity.*;
 import javax.annotation.*;
@@ -158,16 +157,17 @@ public class StarterTimer extends PlayerTimer implements Listener{
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerSpawnLocation(final PlayerSpawnLocationEvent event) {
         final Player player = event.getPlayer();
-        HCF.getPlugin().getKitManager().getKits().get(0).applyTo(event.getPlayer(), false, true);
-        player.updateInventory();
-        if (!player.hasPlayedBefore()) {
+        if (player != null && !player.hasPlayedBefore()) {
             if (!this.plugin.getEotwHandler().isEndOfTheWorld() && this.legible.add(player.getUniqueId())) {
                 player.sendMessage(ChatColor.GREEN + "");
-                player.sendMessage(ChatColor.GREEN + "Tu viens de rejoindre le serveur pour la première fois depuis le début de cette map, tu as donc 60 minutes de Starter Timer");
+                player.sendMessage(ChatColor.GREEN + "");
+                player.sendMessage(ChatColor.GREEN + "Tu viens de rejoindre le serveur pour la première fois depuis le début de cette map, tu as donc 90 minutes de Starter Timer");
+                player.sendMessage(ChatColor.GREEN + "");
                 player.sendMessage(ChatColor.GREEN + "");
                 this.setCooldown(player, player.getUniqueId());
                 this.setPaused(player, player.getUniqueId(), true);
                 HCF.getPlugin().getTimerManager().pvpProtectionTimer.legible.remove(player.getUniqueId());
+                HCF.getPlugin().getTimerManager().pvpProtectionTimer.clearCooldown(player);
             }
         }
         else if (this.isPaused(player) && this.getRemaining(player) > 0L && !this.plugin.getFactionManager().getFactionAt(event.getSpawnLocation()).isSafezone()) {
@@ -189,11 +189,15 @@ public class StarterTimer extends PlayerTimer implements Listener{
                 this.setCooldown(player, player.getUniqueId());
                 this.setPaused(player, player.getUniqueId(), false);
                 player.sendMessage(ChatColor.GREEN + "Ton Starter Timer a commencé.");
+                HCF.getPlugin().getTimerManager().pvpProtectionTimer.legible.remove(player.getUniqueId());
+                HCF.getPlugin().getTimerManager().pvpProtectionTimer.clearCooldown(player);
                 return;
             }
             if (this.getRemaining(player) > 0L) {
                 this.setPaused(player, player.getUniqueId(), false);
                 player.sendMessage(ChatColor.RED + "Ton Starter Timer n'est plus en pause.");
+                HCF.getPlugin().getTimerManager().pvpProtectionTimer.legible.remove(player.getUniqueId());
+                HCF.getPlugin().getTimerManager().pvpProtectionTimer.clearCooldown(player);
             }
         }
         else if (!fromFaction.isSafezone() && toFaction.isSafezone() && this.getRemaining(player) > 0L) {
@@ -202,24 +206,7 @@ public class StarterTimer extends PlayerTimer implements Listener{
         }
     }
     
-    @SuppressWarnings("deprecation")
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
-    public void onPlayerClaimEnter(final PlayerClaimEnterEvent event) {
-        final Player player = event.getPlayer();
-        final Faction toFaction = event.getToFaction();
-        if (toFaction instanceof ClaimableFaction && this.getRemaining(player) > 0L) {
-            final PlayerFaction playerFaction;
-            if (event.getEnterCause() == PlayerClaimEnterEvent.EnterCause.TELEPORT && toFaction instanceof PlayerFaction && (playerFaction = this.plugin.getFactionManager().getPlayerFaction(player)) != null && playerFaction.equals(toFaction)) {
-                player.sendMessage(ChatColor.RED + "Tu es entré dans ton propre claim, ton Starter Timer a donc été retiré.");
-                this.clearCooldown(player);
-                return;
-            }
-            if (!toFaction.isSafezone() && !(toFaction instanceof RoadFaction)) {
-                event.setCancelled(true);
-                player.sendMessage(ChatColor.RED + "Tu ne peux pas entrer dans le territoire de " + toFaction.getDisplayName((CommandSender)player) + ChatColor.RED + " tant que ton Starter Timer est actif. Fait '" + ChatColor.GOLD + "/pvp enable" + ChatColor.RED + "' pour le désactiver.");
-            }
-        }
-    }
+   
     
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onEntityDamageByEntity(final EntityDamageByEntityEvent event) {
@@ -241,6 +228,7 @@ public class StarterTimer extends PlayerTimer implements Listener{
             }
         }
     }
+  
     
     @SuppressWarnings("deprecation")
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
