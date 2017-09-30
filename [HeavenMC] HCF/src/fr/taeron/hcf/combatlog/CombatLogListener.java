@@ -77,6 +77,9 @@ public class CombatLogListener implements Listener
         }
         CraftEventFactory.callPlayerDeathEvent((EntityPlayer)this.plugin.getNpcManager().getSpawnedNpc(player.getUniqueId()).getEntity().getPlayer(), event.getDrops(), "§7(Combat-Logger) " + event.getDeathMessage(), false);
         HCF.getPlugin().getDeathbanManager().applyDeathBan(this.plugin.getNpcManager().getSpawnedNpc(player.getUniqueId()).getEntity().getUniqueId(), "§7(Combat-Logger) " + event.getDeathMessage());
+        if(HCF.getPlugin().getFactionManager().getPlayerFaction(player) != null){
+        	HCF.getPlugin().getFactionManager().getPlayerFaction(player).setDeathsUntilRaidable(HCF.getPlugin().getFactionManager().getPlayerFaction(player).getDeathsUntilRaidable() - 1);
+        }
         player.setHealth(20);
         Bukkit.getScheduler().scheduleSyncDelayedTask((Plugin)this.plugin, (Runnable)new Runnable() {
             @Override
