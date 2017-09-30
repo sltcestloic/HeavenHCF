@@ -16,6 +16,7 @@ import java.util.*;
 import org.bukkit.plugin.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.block.*;
+import org.bukkit.event.entity.PotionEffectRemoveEvent;
 import org.bukkit.event.*;
 import fr.taeron.hcf.faction.type.*;
 
@@ -141,6 +142,20 @@ public class BardClass extends PvpClass implements Listener{
                 player.sendMessage(ChatColor.AQUA + " \u2022" + ChatColor.YELLOW + " Cout d'énergie: " + ChatColor.AQUA + bardEffect.energyCost);
             }
         }
+    }
+    
+    @EventHandler
+    public void quicfixfdp(PotionEffectRemoveEvent e){
+    	if(!(e.getEntity() instanceof Player)){
+    		return;
+    	}
+    	if(e.getEffect().getType() == PotionEffectType.SPEED){
+    		if(this.plugin.getPvpClassManager().getEquippedClass((Player) e.getEntity()).equals(this)){
+    			for(PotionEffect effect : this.passiveEffects){
+    				e.getEntity().addPotionEffect(effect);
+    			}
+    		}
+    	}
     }
     
     @SuppressWarnings("deprecation")

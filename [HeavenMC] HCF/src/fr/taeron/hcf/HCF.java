@@ -280,7 +280,6 @@ public class HCF extends JavaPlugin {
     this.getCommand("ores").setExecutor(new OresCommand());
     this.getCommand("tracker").setExecutor(new TrackerExecutor());
     this.getCommand("flip").setExecutor(new FlipCommand());
-    this.getCommand("kb").setExecutor(new SetKnockbackCommand());
     this.getCommand("coords").setExecutor(new CoordsCommand());
     this.getCommand("ts").setExecutor(new TeamspeakCommand());
     this.getCommand("spawner").setExecutor(new SpawnerCommand());

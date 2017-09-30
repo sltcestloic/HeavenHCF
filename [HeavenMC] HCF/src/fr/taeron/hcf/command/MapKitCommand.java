@@ -40,7 +40,7 @@ public class MapKitCommand implements CommandExecutor, TabCompleter, Listener
     }
     
     public void openGUI(Player p){
-    	Inventory i = Bukkit.createInventory(null, 54, "§eKit de la map 2");
+    	Inventory i = Bukkit.createInventory(null, 54, "§eKit de la map 4");
     	ItemStack grayPane = new ItemBuilder(Material.STAINED_GLASS_PANE).data((short)15).displayName("").build();
     	ItemStack whitePane = new ItemBuilder(Material.STAINED_GLASS_PANE).data((short)0).displayName("").build();
     	ItemStack redPane = new ItemBuilder(Material.STAINED_GLASS_PANE).data((short)14).displayName("").build();
