@@ -47,6 +47,7 @@ public class ShopSignListener implements Listener
                 } else {
                 	stack = new ItemBuilder(Material.getMaterial(lines[1].toUpperCase().replace(" ", "_")), quantity).build();
                 }
+                stack.setAmount(quantity);
                 final Player player = event.getPlayer();
                 final String[] fakeLines = Arrays.copyOf(sign.getLines(), 4);
                 if ((lines[0].contains("Sell") && lines[0].contains(ChatColor.RED.toString())) || lines[0].contains(ChatColor.AQUA.toString())) {

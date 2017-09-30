@@ -27,11 +27,14 @@ public class BardRestorer implements Listener
     public void setRestoreEffect(final Player player, final PotionEffect effect) {
         boolean shouldCancel = true;
         final Collection<PotionEffect> activeList = (Collection<PotionEffect>)player.getActivePotionEffects();
+        if (effect == null) {
+        	return;
+        }
         for (final PotionEffect active : activeList) {
-        	if(active == null || effect == null){
+        	if(active == null){
         		return;
         	}
-            if (!active.getType().equals((Object)effect.getType())) {
+            if (!active.getType().equals(effect.getType())) {
                 continue;
             }
             if (effect.getAmplifier() < active.getAmplifier()) {
